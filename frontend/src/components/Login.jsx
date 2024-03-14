@@ -13,7 +13,7 @@ function Login() {
       password: e.target.password.value
     }
     data.email.length >0 && loginUser(data.email, data.password)
-    console.log(data)
+    // console.log(data)
   }
 
   return (
@@ -87,7 +87,7 @@ function Login() {
           </div>
 
           <div className='w-full flex items-center justify-center'>
-            <p className='text-sm font-normal text-[#060606]'>Dont have an account? <span className='font-semibold underline underline-offset-2 cursor-pointer hover:text-indigo-600'><Link to="/signup">Register</Link></span></p>
+            <p className='text-sm font-normal text-[#060606]'>Dont have an account? <span className='font-semibold text-primary-600 hover:underline hover:text-indigo-600 dark:text-primary-500'><Link to="/signup">Register</Link></span></p>
           </div>
         </div>
       </div>

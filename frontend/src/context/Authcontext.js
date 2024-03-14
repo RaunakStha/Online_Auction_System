@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             })
         })
         const data = await response.json()
-        console.log(data);
+        // console.log(data);
 
         if(response.status === 200){
             console.log("Logged In");
@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem("authTokens")
+        console.log("Logged Out");
         navigate("/login")
         swal.fire({
             title: "You have been logged out...",

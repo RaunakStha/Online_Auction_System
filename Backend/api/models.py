@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 class Status(models.IntegerChoices):
     Active = 1
-    Inactive = 2
-    sold = 3
+    Modified = 2
+    Passive = 3
 
 class User(AbstractUser):
     username = models.CharField(max_length=100)
@@ -85,7 +85,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(null=True, blank=True, upload_to="products_images")
     _id = models.AutoField(primary_key=True, editable=False)
     def __str__(self) -> str:

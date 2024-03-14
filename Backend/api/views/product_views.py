@@ -1,5 +1,5 @@
 from rest_framework import generics
-from ..models import Product, Category, Status
+from ..models import Product
 from ..serializer import ProductSerializer
 from ..filters import ProductFilter
 

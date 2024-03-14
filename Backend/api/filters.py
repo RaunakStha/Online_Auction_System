@@ -22,7 +22,7 @@ class ProductFilter(filters.FilterSet):
     productStatus = filters.ChoiceFilter(
         choices = (
             (Status.Active.value, 'Active'),
-            (Status.Inactive.value, 'Modified'),
+            (Status.Modified.value, 'Modified'),
             ('all', 'All Products'),
         ),
         label = 'Product Status',

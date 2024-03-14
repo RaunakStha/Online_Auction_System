@@ -25,7 +25,9 @@ def getRoutes(request):
     routes = [
         '/api/token/',
         '/api/register/',
-        '/api/token/refresh/'
+        '/api/token/refresh/',
+        'api/products/',
+        'api/categories/'
     ]
     return Response(routes)
 

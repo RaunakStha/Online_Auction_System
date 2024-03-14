@@ -78,7 +78,7 @@ class ProductSerializer(serializers.ModelSerializer):
        return product
     
     def get_seller(self, obj):
-        return obj.user.username
+        return obj.user.first_name
     
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

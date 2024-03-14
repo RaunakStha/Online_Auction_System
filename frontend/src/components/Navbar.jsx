@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <nav className='sticky top-0 bg-slate-100 dark:bg-gray-400 z-50 shadow-md'>
         <div className=' flex justify-between items-center h-15 mx-auto px-4'>
-            <h1 className='w-full max-w-[1000px] text-3xl font-bold '>Online Auction</h1>
+            <h1 className='w-full max-w-[1000px] text-3xl font-bold flex cursor-pointer'onClick={HomeHandler}><img src='images/logo.png' className='w-10 h-10 mr-2'></img>Online Auction</h1>
             <ul className='hidden md:flex'>
                 <li className='cursor-pointer hover:text-indigo-600'onClick={HomeHandler}> Home</li>
                 <li className='cursor-pointer hover:text-indigo-600'> About</li>
@@ -57,7 +57,7 @@ const Navbar = () => {
                     <div className='group relative dropdown pr-3 flex justify-between item-center hover:bg-gray-100 cursor-pointer'>
                         
                         {/* <img src="images\user.png" alt="" className='w-3 h-3 m-2'/> */}
-                        <span className=''><i className='fas fa-user'></i> {full_name}
+                        <span className=''><i className='fas fa-user'></i> {username}
                             <div className='group-hover:block dropdown-menu absolute  hidden h-auto right-0'>
                                 <ul className='top-0 w-40 bg-gray-100 shadow  py-4 rounded-lg'>
                                     <li className='py-1'>

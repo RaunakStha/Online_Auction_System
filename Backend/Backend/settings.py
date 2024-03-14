@@ -106,6 +106,9 @@ DATABASES = {
     #     }
 }
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -148,14 +151,12 @@ STATIC_FILES = [
     BASE_DIR / 'static'
 ]
 
-MEDIA_ROOT = 'static/images'
+MEDIA_ROOT = 'static/images/'
 STATIC_ROOT = 'static/'
 
 
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
