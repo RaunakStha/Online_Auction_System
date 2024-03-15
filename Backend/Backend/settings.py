@@ -145,13 +145,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/images/'
+MEDIA_URL = '/images/products_images/'
 
 STATIC_FILES = [
     BASE_DIR / 'static'
 ]
 
-MEDIA_ROOT = 'static/images/'
+MEDIA_ROOT = 'static/images'
 STATIC_ROOT = 'static/'
 
 

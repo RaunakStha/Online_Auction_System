@@ -15,4 +15,6 @@ admin.site.register(Profile,ProfileAdmin)
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(ProductImage)
+admin.site.register(Bid)
+admin.site.register(UserAddress)
 # Register your models here.

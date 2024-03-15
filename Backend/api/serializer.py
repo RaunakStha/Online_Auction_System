@@ -92,3 +92,76 @@ class CategorySerializer(serializers.ModelSerializer):
             return CategorySerializer(obj.children.all(), many=True, context=self.context).data
         else:
             return []
+        
+class UserAddressSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source = 'user.username')
+    addressName = serializers.CharField(required = 'name')
+    
+    class Meta:
+        model = UserAddress
+        fields = '__all__'
+
+    def validate_addressName(self, value):
+        user = self.context['request'].user
+        if UserAddress.objects.filter(user=user, name=value).exists():
+            raise serializers.ValidationError(
+                {
+                    'detail': 'User address with this address name already exists.'
+                }
+            )
+        return value
+    
+
+class BidSerializer(serializers.ModelSerializer):
+    productName = serializers.ReadOnlyField(source= 'product.name')
+    userName = serializers.ReadOnlyField(source= 'user.full_name')
+    productSlug = serializers.ReadOnlyField(source= 'product.slug')
+    ProductImage = serializers.SerializerMethodField()
+    isMaxBid = serializers.SerializerMethodField()
+    isFinish = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Bid
+        fields = '__all__'
+
+    def get_ProductImage(self, obj):
+        product_image = obj.product.images.first()
+        request = self.context['request']
+        if product_image:
+            return request.build_absolute_uri(product_image.image.url)
+        return None
+    
+    def get_isMaxBid(self, obj):
+        max_bid = obj.product.bids.order_by('-bid').first()
+        if obj == max_bid:
+            return True
+        return False
+    
+    def get_isFinish(self, obj):
+        status = obj.product.productStatus
+        if status == Status.Passive:
+            return True
+        return False
+    
+    def validate_bid(self, value):
+        product = self.context['request'].data.get('product')
+
+        if Product.objects.get(_id = product).user == self.context['request'].user:
+            raise serializers.ValidationError(
+                {
+                    'detail': 'You can not bid your product.'
+                }
+            )
+        if Bid.objects.filter(bid__gte=value, product=product).exists():
+            raise serializers.ValidationError(
+                {
+                    'detail': 'A bid equal to or higher than this already  exists for this product.'
+                }
+            )
+        if Product.objects.get(_id = product).price >= value:
+            raise serializers.ValidationError(
+                {
+                    'detail': 'The bid amount should be greater than the product price.'
+                }
+            )
+        return value

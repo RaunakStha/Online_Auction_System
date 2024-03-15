@@ -58,6 +58,7 @@ class Category(models.Model):
         super().save(*args, **kwargs)
 
 class Product(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     slug = models.SlugField(max_length=200, null=True, blank=True)
@@ -70,11 +71,13 @@ class Product(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     startDate= models.DateTimeField(null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
-    totalBids = models.IntegerField(default=0) 
+    totalBids = models.IntegerField(default=0)
+    provience = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True) 
     endingEmailSent = models.BooleanField(default=False)
     lastEmailSent = models.DateTimeField(default=False)
     videoURL = models.FileField(null=True,blank=True, default ="default.mp4", upload_to="products_video")
-    _id = models.AutoField(primary_key=True, editable=False)
+    
 
     def __str__(self) -> str:
         return self.name
@@ -90,4 +93,32 @@ class ProductImage(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     def __str__(self) -> str:
         return f'{self.product.name} - Image {self.pk}'
+    
+class Bid(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True ,related_name='bids')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    bid = models.IntegerField(null=False, blank=False, default=0)
+    paidAmount = models.IntegerField(null=False, blank=False, default=0)
+    createdAt = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self) -> str:
+        return f'{self.user.username} bidded {self.bid} to {self.product.name}'
+    
+
+class UserAddress(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses',null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    province = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
+    postalCode = models.CharField(max_length=100, null=True, blank=True)
+    mobile = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    firstName = models.CharField(max_length=200, null=True, blank=True)
+    lastName = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f'{self.user.username}: {self.name}'
+
 
