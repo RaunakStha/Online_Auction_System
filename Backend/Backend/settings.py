@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
 ]
+
 
 
 MIDDLEWARE = [
@@ -85,7 +87,16 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'Backend.asgi.application'
 WSGI_APPLICATION = 'Backend.wsgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+
 
 
 # Database

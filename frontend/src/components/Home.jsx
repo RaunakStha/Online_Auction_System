@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 
 const Home = () =>{
@@ -67,7 +68,7 @@ const Home = () =>{
                                                 </a>
                                                 <div className='h-8 px-3 bg-gray-100 dark:bg-gray-400 flex items-center mb-6 rounded-md'>
                                                     <div className='flex items-center mr-3 pr-3 ml-0 border-r border-r-gray-500'>
-                                                        <span><b>00:00:00</b></span>
+                                                        <span><b>{product.startDate}</b></span>
                                                     </div>
                                                     <div className='flex items-center'>
 
@@ -80,8 +81,9 @@ const Home = () =>{
                                                         <span>${product.price}</span>
 
                                                     </div>
-                                                    <button className='ml-6 text-lg items-center h-10'><span className='m-2 text-sm'>Place a bid</span></button>
-
+                                                    <Link to={`/product/${product.slug}-p-${product._id}`}>
+                                                        <button className='ml-6 text-lg items-center h-10'><span className='m-2 text-sm'>Place a bid</span></button>
+                                                    </Link>
                                                 </div>
 
                                             </div>

@@ -28,6 +28,9 @@ const useAxios = () => {
         localStorage.setItem("authTokens", JSON.stringify(response.data))
         // localStorage.setItem("authTokens", JSON.stringify(response.data))
 
+        //localStorage.setItem("access", response.data.access)
+        //localStorage.setItem("refrest", response.data.refresh)
+
         setAuthTokens(response.data)
         setUser(jwtDecode(response.data.access))
 

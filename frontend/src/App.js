@@ -6,6 +6,7 @@ import PrivateRoute from "./utils/PrivateRoute"
 import Signup from "./components/Signup";
 import Mainheader from "./components/Mainheader";
 import Home from "./components/Home";
+import Productdetails from "./components/Productdetails";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -27,8 +28,10 @@ function App() {
             <Route index element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
+            <Route path="/product/:productParams" element={<Productdetails/>} />
             <Route path="/Home" element={<Home/>}/>
           </Route>
+          
       
         </Routes>
       </AuthProvider>
