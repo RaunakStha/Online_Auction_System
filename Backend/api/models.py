@@ -10,6 +10,7 @@ class Status(models.IntegerChoices):
     Passive = 3
 
 class User(AbstractUser):
+
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
 
