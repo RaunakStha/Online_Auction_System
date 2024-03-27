@@ -17,7 +17,7 @@ def get_all_children(category):
 
 class ProductFilter(filters.FilterSet):
         
-    search = filters.CharFilter(method='search_filter', label='Search a product, brand or category')
+    search = filters.CharFilter(method='search_filter', label='Search a product or category')
     
     productStatus = filters.ChoiceFilter(
         choices = (
@@ -50,7 +50,7 @@ class ProductFilter(filters.FilterSet):
     
     def status_filter(self, queryset, name, value):
         if value == 'all':
-            return queryset.exclude(productStatus=Status.sold.value)
+            return queryset.exclude(productStatus=Status.Passive.value)
         return queryset.filter(productStatus=value)
         
     def search_filter(self, queryset, name, value):

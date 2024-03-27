@@ -19,8 +19,8 @@ function Login() {
   return (
       <div className='w-full min-h-screen flex items-start'>
         <div className='relative w-1/2 h-full flex flex-col'>
-          <div className='absolute top-[20%] left-[20%] flex flex-col'>
-            <h1 className='text-4xl text text-[#565353] font-bold my-4'>It’s all about bidding</h1>
+          <div className='absolute top-[20%] left-[6%] flex flex-col'>
+            <h1 className='text-5xl text text-[#565353] font-bold my-4'>It’s all about bidding</h1>
             <p className='text-xl text-[#060606] font-normal'> Available, Affordable, and Comfortable</p>
           </div>
           <img src='/images/Bid.jpg'alt=''className='w-full h-full object-cover' />
@@ -28,7 +28,7 @@ function Login() {
 
         <div className='w-1/2 h-full bg-[#f5f5f5] flex flex-col p-20 justify-between items-center'>
           
-          <h1 className='w-full max-w-[500px] mx-auto text-xl text-[#060606] font-semibold mb-10'>Online Bidding</h1>
+          <h1 className='w-full max-w-[500px] mx-auto text-xl text-[#060606] font-semibold mb-10 flex'><img src='images/logo.png' className='w-4 h-4 mr-2 mt-2'></img>Online Bidding</h1>
           
 
           <div className='w-full flex flex-col max-w-[500px]'>

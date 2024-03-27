@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.utils.text import slugify
+from datetime import datetime
 
 
 class Status(models.IntegerChoices):
@@ -78,7 +79,6 @@ class Product(models.Model):
     endingEmailSent = models.BooleanField(default=False)
     lastEmailSent = models.DateTimeField(default=False)
     videoURL = models.FileField(null=True,blank=True, default ="default.mp4", upload_to="products_video")
-    
 
     def __str__(self) -> str:
         return self.name
@@ -90,6 +90,8 @@ class Product(models.Model):
     
     def get_category_name(self) -> str:
         return self.category.name if self.category else "Uncategorized"
+    
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')

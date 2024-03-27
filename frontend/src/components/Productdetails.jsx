@@ -121,7 +121,7 @@ const Productdetails = () => {
            <span className="font-normal"></span>
         </p>
         <p className="mt-4 text-4xl font-bold text-violet-900">
-          ${product.price}{" "}
+          Starting bid: ${product.price}{" "}
           <span className="text-xs text-gray-400 line-through">
             ${productDetailItem.previousPrice}
           </span>

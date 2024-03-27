@@ -64,7 +64,10 @@ const Navbar = () => {
                                         <a className='block hover:text-indigo-600 cursor-pointer'> Dashboard</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer'> Settings</a>
+                                        <a className='block hover:text-indigo-600 cursor-pointer'> Sell a Product</a>
+                                    </li>
+                                    <li className='py-1'>
+                                        <a className='block hover:text-indigo-600 cursor-pointer'> Profile</a>
                                     </li>
                                     <li className='py-1'>
                                         <a className='block hover:text-indigo-600 cursor-pointer' onClick={logoutUser}> Logout</a>
