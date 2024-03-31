@@ -5,47 +5,70 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BiShoppingBag } from "react-icons/bi";
 import ReactImageGallery from "react-image-gallery";
 import Rater from "react-rater";
-import ReactPlayer from "react-player";
+
 import "react-rater/lib/react-rater.css";
 import { useContext } from "react";
 import AuthContext from "../context/Authcontext";
-
+import Modal from "./Modal";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const Productdetails = () => {
 
     const [product, setProduct] = useState("")
-    const [category, setCategory] = useState("")
-    const {user} = useContext(AuthContext)
+   
+    
+    const {user, makeBid} = useContext(AuthContext)
     const navigate = useNavigate();
+    const [showBiddingForm, setShowBiddingForm] = useState(false);
+    const [bidAmount, setBidAmount] = useState("");
+    const [error, setError] = useState(null);
 
-    console.log(user)
+
+    // console.log(user)
 
     let { productParams } = useParams();
     let [slug, _id] = productParams.split("-p-");
     // const { _id } = useParams();
 
     const getSingleProduct = async () => {
-        const {data} = await axios.get(`http://localhost:8000/api/products/${_id}`);
-        console.log(data)
-        setProduct(data)
-    }
-
-
+      try {
+          const { data } = await axios.get(`http://localhost:8000/api/products/${_id}`);
+          setProduct(data);
+      } catch (error) {
+          console.error("Error fetching product:", error);
+      }
+  };
 
     useEffect(() => {
         getSingleProduct();
     }, [])
 
-
-
     const handleMakeOffer = ()=>{
       //write code for handeling make offer
       //popup code here
+      setShowBiddingForm(true);
       console.log("make offer")
     }
+
     
+    const handleBidSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await makeBid(product._id, bidAmount ); // Call makeBid function
+            setShowBiddingForm(false);
+            setBidAmount("");
+            setError(null);
+        } catch (error) {
+            setError(error.response?.data?.detail || "An error occurred while submitting the bid.");
+        }
+    };
+
+    const handleCloseBiddingForm = () => {
+        setShowBiddingForm(false);
+        setBidAmount("");
+        setError(null);
+    };
 
     
     const productDetailItem = {
@@ -151,6 +174,19 @@ const Productdetails = () => {
             <BiShoppingBag className="mx-2" />
             Make Offer
           </button>
+          {showBiddingForm && (
+                <Modal onClose={handleCloseBiddingForm}>
+                    <h2 className="text-2xl pb-4 font-semibold">Place Your Bid</h2>
+                    <form className="" onSubmit={handleBidSubmit}>
+                        <label className="font-semibold" htmlFor="bidAmount">Bid Amount:</label>
+                        <input 
+                        className="bg-gray-100 border border-gray-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[50%] p-2 mt-2 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                        type="number" id="bidAmount" value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} required placeholder=" $0.00" />
+                        <button className="bg-indigo-600 p-1 w-36" type="submit">Submit Bid</button>
+                    </form>
+                    {error && <p className="text-red-600">{error}</p>}
+                </Modal>
+            )}
 
         </div>
       </div>

@@ -123,6 +123,46 @@ export const AuthProvider = ({ children }) => {
         })
     }
 
+    const makeBid = async (product_id, bidAmount) => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/bids/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${authTokens.access}`
+                },
+                body: JSON.stringify({ product: product_id, bid: bidAmount })
+            });
+            if (response.status === 201) {
+                console.log("Bid placed successfully");
+                swal.fire({
+                    title: "Bid Successfully Placed",
+                    text: "Your bid has been successfully placed.",
+                    icon: "success",
+                    toast: true,
+                    position: 'top-right',
+                    timer: 4000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            } else {
+                console.log("Failed to place bid");
+                swal.fire({
+                    title: "Failed to Place Bid",
+                    icon: "error",
+                    toast: true,
+                    position: 'top-right',
+                    timer: 4000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            }
+        } catch (error) {
+            console.error("Error placing bid:", error);
+        }
+    };
+
+
     const contextData = {
         user, 
         setUser,
@@ -131,6 +171,7 @@ export const AuthProvider = ({ children }) => {
         registerUser,
         loginUser,
         logoutUser,
+        makeBid,
     }
 
     useEffect(() => {

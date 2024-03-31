@@ -97,7 +97,7 @@ class CategorySerializer(serializers.ModelSerializer):
         
 class UserAddressSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source = 'user.username')
-    addressName = serializers.CharField(required = 'name')
+    addressName = serializers.CharField(source = 'name')
     
     class Meta:
         model = UserAddress

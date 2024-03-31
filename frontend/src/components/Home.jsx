@@ -150,7 +150,7 @@ const Home = () =>{
 
                                                     </div>
                                                     <Link to={`/product/${product.slug}-p-${product._id}`}>
-                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>{product.endDate > product.currentDateTime && product.startDate < product.currentDateTime ? 'Place a bid' : 'Detail'}</span></button>
+                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>Place a Bid</span></button>
                                                     </Link>
                                                 </div>
 
@@ -222,7 +222,7 @@ const Home = () =>{
 
                                                     </div>
                                                     <Link to={`/product/${product.slug}-p-${product._id}`}>
-                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>yy</span></button>
+                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>Details</span></button>
                                                     </Link>
                                                 </div>
 
@@ -290,7 +290,7 @@ const Home = () =>{
 
                                                     </div>
                                                     <Link to={`/product/${product.slug}-p-${product._id}`}>
-                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>{endDate > currentDateTime && startDate < currentDateTime ? 'Place a bid' : 'Detail'}</span></button>
+                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>Detail</span></button>
                                                     </Link>
                                                 </div>
 
