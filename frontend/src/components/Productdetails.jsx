@@ -176,15 +176,19 @@ const Productdetails = () => {
           </button>
           {showBiddingForm && (
                 <Modal onClose={handleCloseBiddingForm}>
-                    <h2 className="text-2xl pb-4 font-semibold">Place Your Bid</h2>
-                    <form className="" onSubmit={handleBidSubmit}>
-                        <label className="font-semibold" htmlFor="bidAmount">Bid Amount:</label>
+                    {/* <h2 className="text-2xl pb-4 font-semibold">Place Your Bid</h2> */}
+                    <p className="flex font-bold text-xl justify-between mb-2 mt-6">{product.name}<span className="pr-2 text-indigo-600 font-bold">Price: ${product.price}</span></p>
+                    <form className="flex p" onSubmit={handleBidSubmit}>
+                        <label className="font-semibold p-3" htmlFor="bidAmount">Bid Amount: </label>
                         <input 
                         className="bg-gray-100 border border-gray-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[50%] p-2 mt-2 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                         type="number" id="bidAmount" value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} required placeholder=" $0.00" />
-                        <button className="bg-indigo-600 p-1 w-36" type="submit">Submit Bid</button>
+                        <button className="bg-indigo-600 m-2 ml-6 w-36" type="submit">Submit Bid</button>
                     </form>
                     {error && <p className="text-red-600">{error}</p>}
+                    <div>
+                      
+                    </div>
                 </Modal>
             )}
 

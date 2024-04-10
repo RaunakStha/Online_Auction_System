@@ -10,7 +10,8 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','username','email']
+        fields = ['id','username','email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -25,6 +26,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['verified'] = user.profile.verified
         return token
     
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['id', 'user', 'full_name', 'bio', 'image', 'verified']  # Add other profile fields as needed
+        read_only_fields = ['user']  # Set user field as read-only
+
+    def update(self, instance, validated_data):
+        instance.full_name = validated_data.get('full_name', instance.full_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.image = validated_data.get('image', instance.image)
+        # Update other profile fields as needed
+        instance.save()
+        return instance
+
+    def delete(self, instance):
+        instance.delete()
 
 class RegisterSerilizer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])

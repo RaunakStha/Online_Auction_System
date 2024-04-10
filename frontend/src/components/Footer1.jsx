@@ -18,11 +18,11 @@ function Footer() {
           <div className="flex justify-between flex-col md:flex-row  items-center md:items-start text-left">
             {/* logo side */}
             <div className="flex flex-col w-1/2 md:pl-10 py-4">
-              <img
+              {/* <img
                 src={"images/logo.png"}
                 alt="footer_logo"
                 className="w-[8rem]"
-              />
+              /> */}
               <p className="font-medium text-[#646464]">
               Success is not final, failure is not fatal: it is the courage to continue that counts.
               </p>

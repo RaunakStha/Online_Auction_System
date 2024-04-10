@@ -10,5 +10,6 @@ urlpatterns=[
     path("addresses/", include ('api.urls.address_urls')),
     path("bids/", include ('api.urls.bid_urls')),
     path("dashboard/",dashboard),
-    path('', getRoutes),
+    path("profile/", UserProfileDetailView.as_view()),
+    path('', UserDetailView.as_view(), name='user'),
 ]

@@ -137,13 +137,13 @@ export const AuthProvider = ({ children }) => {
                 console.log("Bid placed successfully");
                 swal.fire({
                     title: "Bid Successfully Placed",
+                    width: 600,
                     text: "Your bid has been successfully placed.",
                     icon: "success",
                     toast: true,
-                    position: 'top-right',
-                    timer: 4000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
+                    // position: 'center',
+                    timerProgressBar: false,
+                    showConfirmButton: true,
                 });
             } else {
                 console.log("Failed to place bid");

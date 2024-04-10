@@ -26,7 +26,7 @@ class Profile(models.Model):
 
     full_name = models.CharField(max_length=300)
     bio = models.CharField(max_length=300)
-        # location = models.CharField(max_length=100)
+       # location = models.CharField(max_length=100)
     image = models.ImageField(default="default.jpg", upload_to="user_images")
     verified = models.BooleanField(default=False)
         # birth_date = models.DateField(null=True, blank=True)
@@ -127,4 +127,14 @@ class UserAddress(models.Model):
     def __str__(self) -> str:
         return f'{self.user.username}: {self.name}'
 
+
+# class Order(models.Model):
+#     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
+#     seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
+#     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_product')
+#     address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True, related_name='order_address')
+#     isConformed = models.BooleanField(default=False)
+#     conformedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+#     isShipping = models.BooleanField(default=False)
+#     shippingAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
 

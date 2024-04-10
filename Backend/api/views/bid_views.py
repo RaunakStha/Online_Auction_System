@@ -57,7 +57,7 @@ class BidList(viewsets.ModelViewSet):
         else:
             return Response(data={'additional_payment': new_paid_amount}, status=status.HTTP_200_OK)
         
-
+ 
     def perform_create(self, serializer):
         user = self.request.user
 

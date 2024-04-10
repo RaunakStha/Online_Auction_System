@@ -18,6 +18,9 @@ const Navbar = () => {
     function HomeHandler(){
         navigate('/home');
     }
+    function profileHandler(){
+        navigate('/profile');
+    }
     const [nav , setNav] = useState(false)
 
     const handleNav = () => {
@@ -67,7 +70,7 @@ const Navbar = () => {
                                         <a className='block hover:text-indigo-600 cursor-pointer'> Sell a Product</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer'> Profile</a>
+                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={profileHandler}> Profile</a>
                                     </li>
                                     <li className='py-1'>
                                         <a className='block hover:text-indigo-600 cursor-pointer' onClick={logoutUser}> Logout</a>
