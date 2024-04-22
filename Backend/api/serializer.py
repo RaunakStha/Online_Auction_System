@@ -8,10 +8,25 @@ from datetime import timedelta
 from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField(read_only=True)
+    _id = serializers.SerializerMethodField(read_only=True)
+    isAdmin = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = User
-        fields = ['id','username','email', 'password']
+        fields = ['id','_id','username','email', 'password','name','isAdmin']
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get__id(self, obj):
+        return obj.id
+
+    def get_isAdmin(self, obj):
+        return obj.is_staff
+    
+    def get_name(self, obj):
+        name = obj.first_name
+        if name == '':
+            name = obj.email
+        return name
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -26,22 +41,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['verified'] = user.profile.verified
         return token
     
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['id', 'user', 'full_name', 'bio', 'image', 'verified']  # Add other profile fields as needed
-        read_only_fields = ['user']  # Set user field as read-only
+# class ProfileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Profile
+#         fields = ['id', 'user', 'full_name', 'bio', 'image', 'verified']  # Add other profile fields as needed
+#         read_only_fields = ['user']  # Set user field as read-only
 
-    def update(self, instance, validated_data):
-        instance.full_name = validated_data.get('full_name', instance.full_name)
-        instance.email = validated_data.get('email', instance.email)
-        instance.image = validated_data.get('image', instance.image)
-        # Update other profile fields as needed
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.full_name = validated_data.get('full_name', instance.full_name)
+    #     # Update other profile fields as needed
+    #     instance.save()
 
-    def delete(self, instance):
-        instance.delete()
+    #     # If you want to update the email field of the related User model
+    #     user = instance.user
+    #     user.email = validated_data.get('email', user.email)
+    #     user.save()
+    # def delete(self, instance):
+    #     instance.delete()
 
 class RegisterSerilizer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -68,6 +84,7 @@ class RegisterSerilizer(serializers.ModelSerializer):
         
         return user
     
+    
 
     
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -82,7 +99,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['_id','images','slug','name','seller','videoURL','description','useStatus','category','price','currentHighestBid','startDate','endDate','totalBids']
+        fields = ['_id','images','slug','name','seller','videoURL','description','productStatus','useStatus','province','district','category','price','currentHighestBid','startDate','endDate','totalBids']
 
     def create(self, validated_data):
        images = self.context['request'].FILES.getlist('images') 
@@ -184,3 +201,48 @@ class BidSerializer(serializers.ModelSerializer):
                 }
             )
         return value
+    
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    ProductName = serializers.SerializerMethodField(read_only=True)
+    ProductImage = serializers.SerializerMethodField(read_only=True)
+    paidPrice = serializers.SerializerMethodField(read_only=True)
+    seller = serializers.SerializerMethodField(read_only=True)
+    buyer = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+        
+    def get_ProductName(self, obj):
+        return obj.product.name
+
+    def get_ProductImage(self, obj):
+        product_image = obj.product.images.first()
+        request = self.context['request']
+        if product_image:
+            return request.build_absolute_uri(product_image.image.url)
+        return None
+
+    def get_paidPrice(self, obj):
+        return obj.product.currentHighestBid
+    
+    def get_seller(self, obj):
+        return obj.seller.first_name
+    
+    def get_buyer(self, obj):
+        return obj.buyer.first_name
+    
+
+class BuyingOrderSerializer(OrderDetailSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt']
+        
+
+class ConfirmedOrderSerializer(OrderDetailSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer', 'confirmedAt', 'address', 'isShipping', 'shippingAt', 'shippingCode', 'isDelivered', 'deliveredAt']

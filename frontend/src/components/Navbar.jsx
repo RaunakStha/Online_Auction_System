@@ -21,6 +21,12 @@ const Navbar = () => {
     function profileHandler(){
         navigate('/profile');
     }
+    function sellProductHandler(){
+        navigate('/product/upload');
+    }
+    function dashboardHandler(){
+        navigate('/dashboard');
+    }
     const [nav , setNav] = useState(false)
 
     const handleNav = () => {
@@ -64,10 +70,10 @@ const Navbar = () => {
                             <div className='group-hover:block dropdown-menu absolute  hidden h-auto right-0'>
                                 <ul className='top-0 w-40 bg-gray-100 shadow  py-4 rounded-lg'>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer'> Dashboard</a>
+                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={dashboardHandler}> Dashboard</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer'> Sell a Product</a>
+                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={sellProductHandler}> Sell a Product</a>
                                     </li>
                                     <li className='py-1'>
                                         <a className='block hover:text-indigo-600 cursor-pointer' onClick={profileHandler}> Profile</a>

@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 const Productdetails = () => {
 
-    const [product, setProduct] = useState("")
+    const [product, setProduct] = useState({})
    
     
     const {user, makeBid} = useContext(AuthContext)
@@ -23,7 +23,8 @@ const Productdetails = () => {
     const [showBiddingForm, setShowBiddingForm] = useState(false);
     const [bidAmount, setBidAmount] = useState("");
     const [error, setError] = useState(null);
-
+    const [highestBid, setHighestBid] = useState(0);
+    const [categoryname, setCategoryname] = useState("")
 
     // console.log(user)
 
@@ -33,8 +34,16 @@ const Productdetails = () => {
 
     const getSingleProduct = async () => {
       try {
-          const { data } = await axios.get(`http://localhost:8000/api/products/${_id}`);
-          setProduct(data);
+        const { data } = await axios.get(`http://localhost:8000/api/products/${_id}`);
+        console.log("data", data);
+        const biddedAmt = data.currentHighestBid; // Assuming 'paidAmount' is a property of the product
+        console.log("biddedAmt", biddedAmt);
+        setHighestBid(biddedAmt);
+        setProduct(data);
+
+        const categoryResponse = await axios.get(`http://localhost:8000/api/categories/${_id}`);
+        setCategoryname(categoryResponse.data.name);
+
       } catch (error) {
           console.error("Error fetching product:", error);
       }
@@ -59,8 +68,14 @@ const Productdetails = () => {
             setShowBiddingForm(false);
             setBidAmount("");
             setError(null);
+
+            if(bidAmount<highestBid){
+                setShowBiddingForm(true)
+                setError("Make a bid higher than the current highest bid");
+            }
         } catch (error) {
             setError(error.response?.data?.detail || "An error occurred while submitting the bid.");
+            setShowBiddingForm(true)
         }
     };
 
@@ -68,6 +83,19 @@ const Productdetails = () => {
         setShowBiddingForm(false);
         setBidAmount("");
         setError(null);
+    };
+
+    const getStatusLabel = (status) => {
+      switch (status) {
+        case 1:
+          return "Active";
+        case 2:
+          return "Modified";
+        case 3:
+          return "Passive";
+        default:
+          return "";
+      }
     };
 
     
@@ -125,26 +153,26 @@ const Productdetails = () => {
           </div>
         </div>
         <div className="">
-        <p className="mt-5 font-bold">
-          Status:{" "}
-          {productDetailItem.availability ? (
+        <p className={`font-bold ${product.productStatus === 1 ? 'text-green-600' : 'text-red-600'}`}>
+          Status: {getStatusLabel(product.productStatus)}
+          {/* {productDetailItem.availability ? (
             <span className="text-indigo-600">Active </span>
           ) : (
             <span className="text-red-600">Expired</span>
-          )}
+          )} */}
         </p>
         <p className="font-bold">
           current Highest Bid: <span className="font-normal">{product.currentHighestBid}</span>
         </p>
         <p className="font-bold">
           Cathegory:{" "}
-          <span className="font-normal">{product.category}</span>
+          <span className="font-normal">{categoryname}</span>
         </p>
         <p className="font-bold">
            <span className="font-normal"></span>
         </p>
         <p className="mt-4 text-4xl font-bold text-violet-900">
-          Starting bid: ${product.price}{" "}
+          Starting Price: Rs {product.price}{" "}
           <span className="text-xs text-gray-400 line-through">
             ${productDetailItem.previousPrice}
           </span>
@@ -171,24 +199,25 @@ const Productdetails = () => {
               navigate("/login")
             }
           }} className="flex h-12 w-[50%] items-center justify-center bg-indigo-600 text-white duration-10">
-            <BiShoppingBag className="mx-2" />
+            
             Make Offer
           </button>
           {showBiddingForm && (
                 <Modal onClose={handleCloseBiddingForm}>
                     {/* <h2 className="text-2xl pb-4 font-semibold">Place Your Bid</h2> */}
-                    <p className="flex font-bold text-xl justify-between mb-2 mt-6">{product.name}<span className="pr-2 text-indigo-600 font-bold">Price: ${product.price}</span></p>
+                    <p className="flex font-bold text-xl justify-between mb-2 mt-6">{product.name}<span className="pr-2 text-indigo-600 font-bold">Price: Rs{product.price}</span></p>
                     <form className="flex p" onSubmit={handleBidSubmit}>
                         <label className="font-semibold p-3" htmlFor="bidAmount">Bid Amount: </label>
                         <input 
                         className="bg-gray-100 border border-gray-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[50%] p-2 mt-2 mb-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                        type="number" id="bidAmount" value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} required placeholder=" $0.00" />
-                        <button className="bg-indigo-600 m-2 ml-6 w-36" type="submit">Submit Bid</button>
+                        type="number" id="bidAmount" value={bidAmount} onChange={(e) => setBidAmount(e.target.value)} required placeholder=" Rs0.00" />
+                        <button className="bg-indigo-600 m-2 ml-6 w-36" type="submit" onClick={()=>{
+                          if(bidAmount<product.currentHighestBid){
+                            <p className="text-red-600">*make a bid higher then the current highest bid</p>
+                          }
+                        }}>Submit Bid</button>
                     </form>
                     {error && <p className="text-red-600">{error}</p>}
-                    <div>
-                      
-                    </div>
                 </Modal>
             )}
 

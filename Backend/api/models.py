@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.utils.text import slugify
-from datetime import datetime
+from django.utils import timezone
 
 
 class Status(models.IntegerChoices):
@@ -68,20 +68,21 @@ class Product(models.Model):
     price = models.IntegerField(null=True, blank=True)
     useStatus = models.CharField(max_length=50, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
-    endDate= models.DateTimeField()
+    endDate= models.DateTimeField(default=timezone.now)
     productStatus = models.IntegerField(choices=Status.choices, default=Status.Active)
     createdAt = models.DateTimeField(auto_now_add=True)
-    startDate= models.DateTimeField(null=True, blank=True)
+    startDate= models.DateTimeField(default=timezone.now,null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
     totalBids = models.IntegerField(default=0)
-    provience = models.CharField(max_length=100, null=True, blank=True)
+    province = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True) 
+    
     endingEmailSent = models.BooleanField(default=False)
     lastEmailSent = models.DateTimeField(default=False)
     videoURL = models.FileField(null=True,blank=True, default ="default.mp4", upload_to="products_video")
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
     
     def save(self, *args, **kwargs) -> str:
         if not self.slug:
@@ -128,13 +129,30 @@ class UserAddress(models.Model):
         return f'{self.user.username}: {self.name}'
 
 
-# class Order(models.Model):
-#     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
-#     seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
-#     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_product')
-#     address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True, related_name='order_address')
-#     isConformed = models.BooleanField(default=False)
-#     conformedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-#     isShipping = models.BooleanField(default=False)
-#     shippingAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+class Order(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
+    seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_product')
+    address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True, related_name='order_address')
+    isConformed = models.BooleanField(default=False)
+    conformedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    isShipping = models.BooleanField(default=False)
+    shippingAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    shippingCode = models.CharField(max_length=100, null=True, blank=True)
+    isDelivered = models.BooleanField(default=False)
+    deliveredAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id = models.AutoField(primary_key=True, editable=False)
 
+    def __str__(self) -> str:
+        return f'{self.product} bought by {self.buyer} from {self.seller}'
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.isConformed is True and self.conformedAt is None:
+            self.conformedAt = timezone.now()
+        if self.isDelivered is True and self.deliveredAt is None:
+            self.deliveredAt = timezone.now()
+        if self.isShipping is True and self.shippingAt is None:
+            self.shippingAt = timezone.now()
+
+        super().save(*args, **kwargs)

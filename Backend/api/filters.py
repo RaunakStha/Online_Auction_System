@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 from django_filters.filters import ModelChoiceFilter
-from .models import Product, Category, Status
+from .models import Product, Category, Status, Order
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -62,3 +62,25 @@ class ProductFilter(filters.FilterSet):
             Q(category__in=all_categories) |
             Q(name__icontains=value)
         )
+    
+
+class OrderFilter(filters.FilterSet):
+    inShipping = filters.BooleanFilter(field_name='inShipping', label='Is in shipping?')
+    isDelivered = filters.BooleanFilter(field_name='isDelivered', label='Status')
+    search = filters.CharFilter(method='search_filter', label='Search')
+
+    class Meta:
+        model = Order
+        fields = []
+
+    def search_filter(self, queryset, name, value):
+        if 'buyer' in self.request.path:
+            return queryset.filter(
+                Q(product__name__icontains=value) |
+                Q(seller__first_name__icontains=value)
+            )
+        elif 'seller' in self.request.path:
+            return queryset.filter(
+                Q(product__name__icontains=value) |
+                Q(buyer__first_name__icontains=value)
+            )

@@ -52,6 +52,10 @@ INSTALLED_APPS = [
     # 'rest_framework_authtoken', # for custome sign-up insted using django's in-built sign-up
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
+    'oauth2_provider',
+    'social_django',
 ]
 
 
@@ -82,6 +86,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -105,7 +111,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'auction_app1',
+        'NAME': 'auction',
         'USER': 'postgres',
         'PASSWORD': 'Raunakstha123',
         'HOST': 'localhost',
@@ -117,11 +123,19 @@ DATABASES = {
     #     }
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken', 'Set-Cookie']
+CORS_COOKIE_SECURE=True
+CORS_COOKIE_SAMESITE='None'
+
+SESSION_COOKIE_HTTPONLY=True
+SESSION_COOKIE_SECURE=True
+SESSION_COOKIE_SAMESITE='None'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -185,6 +199,8 @@ REST_FRAMEWORK = {
     # ]   
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ),
         'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -193,6 +209,30 @@ REST_FRAMEWORK = {
     
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Google OAuth2
+   'social_core.backends.google.GoogleOAuth2',
+   'drf_social_oauth2.backends.DjangoOAuth2',
+   'django.contrib.auth.backends.ModelBackend',
+)
+
+# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '78065309530-1n8c5n6gp8mpuupmv9lsvn7g3at228v3.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # This is typically missing and crucial.
+EMAIL_HOST_USER = 'np03cs4s220126@heraldcollege.edu.np'
+EMAIL_HOST_PASSWORD = 'zrfcpfztjccjvqpj'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -201,7 +241,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api.User'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
     
     'ROTATE_REFRESH_TOKENS': True,
@@ -233,3 +273,20 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+CELERY_BROKER_URL='redis://localhost:6379'
+CELERY_ACCEPT_CONTENT=['application/json']
+CELERY_RESULT_SERIALIZER='json'
+CELERY_TASK_SERIALIZER='json'
+CELERY_TIMEZONE='Asia/Kathmandu'
+CELERY_RESULT_BACKEND='django-db'
+CELERY_CACHE_BACKEND='django-cache'
+
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'celery',
+    }
+}

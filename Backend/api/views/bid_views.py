@@ -50,7 +50,7 @@ class BidList(viewsets.ModelViewSet):
         if Bid.objects.filter(bid__gte= request.data.get('bid'), product = request.data.get('product')):
             return Response(data={'detail': 'A bid equal to or higher than this already exists for this product.'}, status=status.HTTP_400_BAD_REQUEST)
         if Product.objects.get(_id = request.data.get('product')).price >= int(request.data.get('bid')):
-            return Response({'detail': 'You can not bid lower than your previous bid.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Your bid must be higher than the starting bid of the product.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if previous_bid is not None:
             return Response(data={'previous_bid': previous_bid.bid, 'additional_payment': new_paid_amount}, status=status.HTTP_200_OK)
