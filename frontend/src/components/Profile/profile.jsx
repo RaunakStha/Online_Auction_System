@@ -41,8 +41,8 @@ const Profile = () => {
       formDataToSend.append('confirmPassword', formData.confirmPassword);
       formDataToSend.append('image', formData.image);
 
-      const response = await axios('http://127.0.0.1:8000/api/', {
-        method: 'POST',
+      const response = await axios('http://127.0.0.1:8000/api/profile/', {
+        method: 'PUT',
         data: formDataToSend,
         headers: {
           'Content-Type': 'multipart/form-data',

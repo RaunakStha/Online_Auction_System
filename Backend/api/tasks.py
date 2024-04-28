@@ -1,49 +1,36 @@
 from django.utils import timezone
 from datetime import timedelta
 from celery import shared_task
-
-from .utils import send_ending_email, send_winner_email, send_loser_email, create_order
-from .models import Product, Status
-
-
-@shared_task
-def check_products_and_send_ending_email():
-    now = timezone.now()
-    one_hour_later = now + timedelta(hours=1)
-    
-    soon_ending_products = Product.objects.filter(endDate__lte = one_hour_later, endDate__gte= now, endingEmailSent = False, productStatus = Status.Active)
-
-    for product in soon_ending_products:
-        for bid in product.bids.all():
-            if bid is not None:
-                send_ending_email(bid.user, product)
-
-        product.endingEmailSent = True
-        product.save()
-
-    return "Done sending ending mails."
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from celery import shared_task
+from .utils import send_ending_email, send_winner_email, send_loser_email, create_order, send_email_cleint
+from .models import Product, Status,Bid
 
 
 @shared_task
-def check_products_and_send_last_email():
-    now = timezone.now()
+def send_end_auction_email(product_id, highest_bidder_email):
+    try:
+        print("Inside send_end_auction_email task")
+        product = Product.objects.get(pk=product_id)
+    except Product.DoesNotExist:
+        # Handle the case where the product doesn't exist
+        return
 
-    ending_products = Product.objects.filter(endDate__lte = now, lastEmailSent = False, productStatus = Status.Active)
-
-    for product in ending_products:
-        max_bid = product.bids.order_by('-bid').first()
-        if max_bid is None:
-            pass
-        else:
-            for bid in product.bids.all():
-                if bid == max_bid:
-                    send_winner_email(max_bid.user, product)
-                    create_order(product, max_bid.user)
-                else:
-                    send_loser_email(bid.user, product)
-
-        product.lastEmailSent = True
-        product.productStatus = Status.Modified
-        product.save()
-
-    return "Done sending last mails."
+    # Prepare email content
+    subject = "Auction Ended for Product: {}".format(product.name)
+    context = {
+        'product': product,
+        'highest_bid': product.currentHighestBid
+    }
+    html_message = render_to_string('end_auction.html', context)
+    plain_message = strip_tags(html_message)
+    recipient_list=[highest_bidder_email]
+    print(recipient_list)
+    # Send email
+    send_email_cleint(
+        subject,
+        plain_message, 
+        recipient_list,
+    )

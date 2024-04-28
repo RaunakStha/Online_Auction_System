@@ -51,7 +51,11 @@ const Home = () =>{
         } else if (currentDateTime.getTime() >= startDate.getTime() && currentDateTime.getTime() <= endDate.getTime()) {
             ongoing.push({...product, formattedEndDate, formattedStartDate}); // Product is currently ongoing
         } else {
-            closed.push({...product, formattedEndDate, formattedStartDate}); // Product has ended, so it's closed
+            closed.push({...product, formattedEndDate, formattedStartDate});
+            if (!product.endingEmailSent) {
+                // Perform a POST request to the backend to end the auction
+                handleEndAuction(product._id);
+            }
         }
         });
 
@@ -111,6 +115,18 @@ const Home = () =>{
         }
     },[query]);
     console.log();
+
+    const endAuction = async (productId) => {
+        try {
+            await axios.post(`http://127.0.0.1:8000/api/products/${productId}/end/`);
+        } catch (error) {
+            console.log('Error ending auction:', error);
+        }
+    };
+
+    const handleEndAuction = (productId) => {
+        endAuction(productId);
+    };
 
     return ( 
         <div className='max-w-[1640px] mx-auto p-4'>
@@ -392,9 +408,7 @@ const Home = () =>{
                                                         <span>Rs: {product.price}</span>
 
                                                     </div>
-                                                    <Link to={`/product/${product.slug}-p-${product._id}`}>
-                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>Detail</span></button>
-                                                    </Link>
+                                            
                                                 </div>
 
                                             </div>

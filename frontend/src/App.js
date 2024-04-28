@@ -15,6 +15,7 @@ import BiddingDetails from "./components/Dashboard/BiddingDetails";
 import OrdersPage from "./components/Dashboard/OrdersPage";
 import SoldProducts from "./components/Dashboard/SoldProduct";
 import Address from "./components/Profile/Address";
+import Checkout from "./components/Checkout";
 
 
 function App() {
@@ -26,16 +27,22 @@ function App() {
             <Route index element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
-            <Route path="/product/:productParams" element={<Productdetails/>} />
+            <Route path="/product/:productParams" element={<Productdetails/>} >
+              
+            </Route>
+            <Route path="/checkout" element={<Checkout/>}/>
             <Route path="/profile" element={<Profile/>}>
               <Route path="addresses" element={<Address/>}/>
             </Route>
             <Route path="/product/upload" element={<Productsell/>}/>
+          
             <Route path="/dashboard" element={<Dashboard/>}>
               <Route index element={<BiddingDetails/>}/>
               <Route path="orders/buying" element={<OrdersPage/>}/>
               <Route path="orders/selling" element={<SoldProducts/>}/>
             </Route>
+            
+            
             <Route path="/Home" element={<Home/>}/>
             
           </Route>

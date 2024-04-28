@@ -41,23 +41,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['verified'] = user.profile.verified
         return token
     
-# class ProfileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Profile
-#         fields = ['id', 'user', 'full_name', 'bio', 'image', 'verified']  # Add other profile fields as needed
-#         read_only_fields = ['user']  # Set user field as read-only
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['id', 'user', 'full_name', 'bio', 'image', 'verified']  # Add other profile fields as needed
+        read_only_fields = ['user']  # Set user field as read-only
 
-    # def update(self, instance, validated_data):
-    #     instance.full_name = validated_data.get('full_name', instance.full_name)
-    #     # Update other profile fields as needed
-    #     instance.save()
+    def update(self, instance, validated_data):
+        instance.full_name = validated_data.get('full_name', instance.full_name)
+        # Update other profile fields as needed
+        instance.save()
 
-    #     # If you want to update the email field of the related User model
-    #     user = instance.user
-    #     user.email = validated_data.get('email', user.email)
-    #     user.save()
-    # def delete(self, instance):
-    #     instance.delete()
+        # If you want to update the email field of the related User model
+        user = instance.user
+        user.email = validated_data.get('email', user.email)
+        user.save()
+    def delete(self, instance):
+        instance.delete()
 
 class RegisterSerilizer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -104,7 +104,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
        images = self.context['request'].FILES.getlist('images') 
        user = self.context['request'].user
-       start_date = timezone.localtime(timezone.now())+timedelta(days=3)
+       start_date =  timezone.localtime(timezone.now())
     #    validated_data.pop('startDate', None)
        product = Product.objects.create(user=user, startDate=start_date, **validated_data)
 

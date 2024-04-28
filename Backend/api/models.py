@@ -74,11 +74,12 @@ class Product(models.Model):
     startDate= models.DateTimeField(default=timezone.now,null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
     totalBids = models.IntegerField(default=0)
+    
     province = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True) 
     
     endingEmailSent = models.BooleanField(default=False)
-    lastEmailSent = models.DateTimeField(default=False)
+    lastEmailSent = models.BooleanField(default=False)
     videoURL = models.FileField(null=True,blank=True, default ="default.mp4", upload_to="products_video")
 
     def __str__(self) -> str:
@@ -89,8 +90,6 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
     
-    def get_category_name(self) -> str:
-        return self.category.name if self.category else "Uncategorized"
     
 
 

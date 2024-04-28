@@ -14,7 +14,7 @@ urlpatterns=[
     path("bids/", include ('api.urls.bid_urls')),
     path("orders/", include ('api.urls.order_urls')),
     path("dashboard/",dashboard),
-    # path("profile/", UserProfileDetailView.as_view()),
+    path("profile/", UserProfileDetailView.as_view()),
     path('', UserDetailView.as_view(), name='user'),
 
 ]

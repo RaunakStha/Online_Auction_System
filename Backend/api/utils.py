@@ -6,7 +6,9 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from dotenv import load_dotenv
 import os
+from django.conf import settings
 load_dotenv()
+from django.core.mail import send_mail
 
 from .models import Order
 
@@ -18,15 +20,9 @@ class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
         )
 
 
-def send_email(mail_subject, message, user):
-    email = EmailMessage(
-        mail_subject,
-        message, 
-        'np03cs4s220126@heraldcollege.edu.np',
-        [user.email]
-    )
-    email.content_subtype = 'html'
-    email.send()
+def send_email_cleint(mail_subject, message, user_list):
+    from_email=settings.DEFAULT_FROM_EMAIL
+    send_mail(mail_subject,message,from_email,user_list)
 
 
 def send_verification_email(request, user):
@@ -40,7 +36,7 @@ def send_verification_email(request, user):
         'protocol': 'https' if request.is_secure() else 'http'
     })
 
-    send_email(mail_subject, message, user)
+    send_mail(mail_subject, message, user)
 
 
 def product_email_context(user, product):
@@ -62,7 +58,7 @@ def send_ending_email(user, product):
     message_context = product_email_context(user, product)
     message = render_to_string('ending_email.html', message_context)
 
-    send_email(mail_subject, message, user)
+    send_mail(mail_subject, message, user)
 
 
 def send_winner_email(user, product):
@@ -70,7 +66,7 @@ def send_winner_email(user, product):
     message_context = product_email_context(user, product)
     message = render_to_string('winner_email.html', message_context)
 
-    send_email(mail_subject, message, user)
+    send_mail(mail_subject, message, user)
 
 
 def send_loser_email(user, product):
@@ -78,7 +74,7 @@ def send_loser_email(user, product):
     message_context = product_email_context(user, product)
     message = render_to_string('loser_email.html', message_context)
 
-    send_email(mail_subject, message, user)
+    send_mail(mail_subject, message, user)
 
 
 def delete_cookies(response):
