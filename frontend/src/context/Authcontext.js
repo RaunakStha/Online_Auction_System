@@ -126,6 +126,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+ 
     const logoutUser = () => {
         setAuthTokens(null)
         setUser(null)
@@ -185,6 +186,7 @@ export const AuthProvider = ({ children }) => {
             console.error("Error placing bid:", error);
         }
     };
+    
 
     
 

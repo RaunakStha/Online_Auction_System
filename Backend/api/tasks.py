@@ -22,7 +22,10 @@ def send_end_auction_email(product_id, highest_bidder_email):
     subject = "Auction Ended for Product: {}".format(product.name)
     context = {
         'product': product,
-        'highest_bid': product.currentHighestBid
+        'highest_bid': product.currentHighestBid,
+        'price': product.price,
+        'description': product.description,
+        'image': product.images,
     }
     html_message = render_to_string('end_auction.html', context)
     plain_message = strip_tags(html_message)
@@ -31,6 +34,8 @@ def send_end_auction_email(product_id, highest_bidder_email):
     # Send email
     send_email_cleint(
         subject,
-        plain_message, 
+        plain_message,  
         recipient_list,
     )
+
+

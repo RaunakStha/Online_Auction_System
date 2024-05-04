@@ -20,8 +20,8 @@ function Login() {
       <div className='w-full min-h-screen flex items-start'>
         <div className='relative w-1/2 h-full flex flex-col'>
           <div className='absolute top-[20%] left-[6%] flex flex-col'>
-            <h1 className='text-5xl text text-[#565353] font-bold my-4'>It’s all about bidding</h1>
-            <p className='text-xl text-[#060606] font-normal'> Available, Affordable, and Comfortable</p>
+            <h1 className='text-5xl text text-[#4368fa] font-bold my-4'>It’s all about bidding</h1>
+            <p className='text-xl text-[#2736b6] font-normal'> Available, Affordable, and Comfortable</p>
           </div>
           <img src='/images/Bid.jpg'alt=''className='w-full h-full object-cover' />
         </div>
@@ -56,10 +56,10 @@ function Login() {
               <div className='w-full flex items-center justify-between'>
                 <div className='w-full flex items-center'>
                   <input type="checkbox" className='w-4 h-4 mr-2'name='checkbox' />
-                  <p className='text-sm font-normal text-[#060606]'>Remember me</p>
+                  <p className='text-sm font-normal text-[#000000]'>Remember me</p>
                 </div>
 
-                <p className='text-sm font-medium whitespace-nowrap cursor-pointer underline underline-offset-2'>Forget Password ?</p>
+                <p className='text-sm font-medium whitespace-nowrap cursor-pointer underline underline-offset-2'><Link to="/forgot-password">Forget Password ?</Link></p>
               </div>
 
               <div className='w-full flex flex-col my-4 '>
@@ -67,22 +67,7 @@ function Login() {
                 type='submit'>Log in</button>
               </div>
 
-              {/* <div className='w-full flex items-center justify-center relative py-2'>
-                <div className='w-full h-[1px] bg-black'></div>
-                <p className='text-lg absolute text-black/80 bg-[#f5f5f5]'>Or</p>
-              </div>
-              <div className="w-full  my-2 bg-white border border-slate-300  dark:border-slate-700 rounded-md p-4 flex flex-col hover:border-slate-400 hover:shadow transition duration-150">
-                <button className='flex bg-transparent text-[#060606] border border-none hover:bg-transparent items-center hover:text-black  text-center font-bold justify-center '>
-                  <img
-                    className="mr-2 h-6"
-                    src="https://www.svgrepo.com/show/475656/google-color.svg"
-                    loading="lazy"
-                    alt="google logo"
-                  />
-                  Login with Google
-                </button>
-                
-              </div> */}
+    
             </form>
           </div>
 

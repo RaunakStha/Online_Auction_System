@@ -5,28 +5,14 @@ from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
 
+
 from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
-    _id = serializers.SerializerMethodField(read_only=True)
-    isAdmin = serializers.SerializerMethodField(read_only=True)
-    class Meta:
-        model = User
-        fields = ['id','_id','username','email', 'password','name','isAdmin']
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def get__id(self, obj):
-        return obj.id
-
-    def get_isAdmin(self, obj):
-        return obj.is_staff
-    
-    def get_name(self, obj):
-        name = obj.first_name
-        if name == '':
-            name = obj.email
-        return name
+        class Meta:
+            model = User
+            fields = ('id', 'username', 'email', 'password')
+            extra_kwargs = {'password': {'write_only': True}}
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -49,15 +35,16 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.full_name = validated_data.get('full_name', instance.full_name)
-        # Update other profile fields as needed
-        instance.save()
-
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.image = validated_data.get('image', instance.image)
+        instance.verified = validated_data.get('verified', instance.verified)
+        instance.save()  # Save changes
+        
+        # Return the updated instance
+        return instance
+    
         # If you want to update the email field of the related User model
-        user = instance.user
-        user.email = validated_data.get('email', user.email)
-        user.save()
-    def delete(self, instance):
-        instance.delete()
+    
 
 class RegisterSerilizer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -70,7 +57,11 @@ class RegisterSerilizer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
-            
+        
+        password = attrs.get("password2","")
+        if len(password) < 8:
+            raise serializers.ValidationError({"password": "Password must be at least 8 characters."})
+     
         return attrs
         
     def create(self, validated_data):
@@ -84,9 +75,23 @@ class RegisterSerilizer(serializers.ModelSerializer):
         
         return user
     
-    
 
-    
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        user = User.objects.filter(email=value)
+        if not user:
+            raise serializers.ValidationError("The email is not registered.")
+        return value
+
+    def get_user(self, email):
+        try:
+            user = User.objects.get(email=email)
+            return user
+        except User.DoesNotExist:
+            return None
+
 class ProductImageSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -114,7 +119,7 @@ class ProductSerializer(serializers.ModelSerializer):
        return product
     
     def get_seller(self, obj):
-        return obj.user.first_name
+        return obj.user.username
     
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -204,8 +209,8 @@ class BidSerializer(serializers.ModelSerializer):
     
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    ProductName = serializers.SerializerMethodField(read_only=True)
-    ProductImage = serializers.SerializerMethodField(read_only=True)
+    productName = serializers.SerializerMethodField(read_only=True)
+    productImage = serializers.SerializerMethodField(read_only=True)
     paidPrice = serializers.SerializerMethodField(read_only=True)
     seller = serializers.SerializerMethodField(read_only=True)
     buyer = serializers.SerializerMethodField(read_only=True)
@@ -214,10 +219,10 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
         
-    def get_ProductName(self, obj):
+    def get_productName(self, obj):
         return obj.product.name
 
-    def get_ProductImage(self, obj):
+    def get_productImage(self, obj):
         product_image = obj.product.images.first()
         request = self.context['request']
         if product_image:
@@ -228,10 +233,10 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         return obj.product.currentHighestBid
     
     def get_seller(self, obj):
-        return obj.seller.first_name
+        return obj.seller.username
     
     def get_buyer(self, obj):
-        return obj.buyer.first_name
+        return obj.buyer.username
     
 
 class BuyingOrderSerializer(OrderDetailSerializer):

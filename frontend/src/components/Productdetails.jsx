@@ -41,7 +41,7 @@ const Productdetails = () => {
         setHighestBid(biddedAmt);
         setProduct(data);
 
-        const categoryResponse = await axios.get(`http://localhost:8000/api/categories/${_id}`);
+        const categoryResponse = await axios.get(`http://localhost:8000/api/categories/${data.category}`);
         setCategoryname(categoryResponse.data.name);
 
       } catch (error) {
@@ -99,18 +99,7 @@ const Productdetails = () => {
     };
 
     
-    const productDetailItem = {
-        
-        reviews: "150",
-        status: true,
 
-        category: "Electronic",
-       
-
-        previousPrice: 599,
-        description:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem exercitationem voluptate sint eius ea assumenda provident eos repellendus qui neque! Velit ratione illo maiores voluptates commodi eaque illum, laudantium non!",
-      };
       
 
     return(
@@ -140,16 +129,9 @@ const Productdetails = () => {
         <p className="mt-1 text-sm text-gray-400 text-bold"><span>Seller: </span>{product.seller}</p>
         <div className="mt-1">
           <div className="flex items-center">
-            <Rater
-              style={{ fontSize: "20px" }}
-              total={5}
-              interactive={false}
-              rating={3.5}
-            />
 
-            <p className="ml-3 text-sm text-gray-400">
-              ({productDetailItem.reviews})
-            </p>
+
+
           </div>
         </div>
         <div className="">
@@ -166,16 +148,18 @@ const Productdetails = () => {
         </p>
         <p className="font-bold">
           Cathegory:{" "}
-          <span className="font-normal">{categoryname}</span>
+          <span  className="font-normal">{categoryname}</span>
+        </p>
+        <p className="font-bold">
+          Provience:{" "}
+          <span className="font-normal">{product.province}</span>
         </p>
         <p className="font-bold">
            <span className="font-normal"></span>
         </p>
         <p className="mt-4 text-4xl font-bold text-violet-900">
           Starting Price: Rs {product.price}{" "}
-          <span className="text-xs text-gray-400 line-through">
-            ${productDetailItem.previousPrice}
-          </span>
+
         </p>
         <p className="pt-5 text-sm leading-5 text-gray-500">
           {product.description}

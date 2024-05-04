@@ -8,7 +8,6 @@ const Mainheader = () =>{
         <Navbar/>
         <Outlet/>
         <Footer1/>
-        
     </div>
 }
 

@@ -150,14 +150,12 @@ const handleAddOrUpdateAddress = async (e) => {
       }
     }
   };
-  
-
   return (
-    <div>
+    <div className='px-60 mb-10'>
       <h2 className="font-bold text-xl mb-4">Addresses</h2>
       <div>
         {addresses.map((address) => (
-          <div key={address._id} className="border p-4 mb-2">
+          <div key={address._id} className=" border p-4 mb-2">
             <p>Description: {address.description}</p>
             <p>Province: {address.province}</p>
             <p>District: {address.district}</p>

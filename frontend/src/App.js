@@ -16,6 +16,8 @@ import OrdersPage from "./components/Dashboard/OrdersPage";
 import SoldProducts from "./components/Dashboard/SoldProduct";
 import Address from "./components/Profile/Address";
 import Checkout from "./components/Checkout";
+import PasswordResetForm from "./components/PasswordResetFrom";
+import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
             <Route index element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
+            
             <Route path="/product/:productParams" element={<Productdetails/>} >
               
             </Route>
@@ -41,7 +44,8 @@ function App() {
               <Route path="orders/buying" element={<OrdersPage/>}/>
               <Route path="orders/selling" element={<SoldProducts/>}/>
             </Route>
-            
+            <Route path="/forgot-password" element={<ForgotPasswordForm/>}/> {/* Add route for forgot password */}
+            <Route path="/reset-password/:uid/:token" element={<PasswordResetForm/>}/> {/* Add route for password reset */}
             
             <Route path="/Home" element={<Home/>}/>
             

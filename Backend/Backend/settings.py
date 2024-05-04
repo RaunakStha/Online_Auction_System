@@ -29,12 +29,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# CORS_ALLOWED_ORIGINS =[
-#     'http://localhost:3000',
-#     'http://192.168.1.72:3000',
-# ]
+CORS_ALLOWED_ORIGINS =[
+    'http://localhost:3000',
+    'http://192.168.1.72:3000',
+]
 
-
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,9 +125,9 @@ DATABASES = {
     #     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOW_CREDENTIALS = True
+
 
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -173,7 +175,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/images/products_images/'
+MEDIA_URL = '/images/'
 
 STATIC_FILES = [
     BASE_DIR / 'static'

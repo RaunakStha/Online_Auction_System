@@ -66,11 +66,11 @@ const Checkout = () => {
                   className="ml-4 flex gap-2 cursor-pointer"
                 >
                   <img
-                    src="https://readymadeui.com/images/visa.webp"
-                    className="w-12"
+                    src="images\esewa-fonepay-pvt-ltd-logo-portable-network-graphics-image-brand-cash-on-delivery-logo-8703ede60180bb81585b7e3441fb44c6.png"
+                    className="w-20"
                     alt="card1"
                   />
-                  <img
+                  {/* <img
                     src="https://readymadeui.com/images/american-express.webp"
                     className="w-12"
                     alt="card2"
@@ -79,10 +79,10 @@ const Checkout = () => {
                     src="https://readymadeui.com/images/master.webp"
                     className="w-12"
                     alt="card3"
-                  />
+                  /> */}
                 </label>
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <input
                   type="radio"
                   className="w-5 h-5 cursor-pointer"
@@ -93,20 +93,20 @@ const Checkout = () => {
                   className="ml-4 flex gap-2 cursor-pointer"
                 >
                   <img
-                    src="https://readymadeui.com/images/paypal.webp"
+                    src="images\esewa-fonepay-pvt-ltd-logo-portable-network-graphics-image-brand-cash-on-delivery-logo.jpg"
                     className="w-20"
-                    alt="paypalCard"
+                    alt="esewa"
                   />
                 </label>
-              </div>
+              </div> */}
             </div>
             <div className="grid gap-6 mt-8">
-              <input
+              {/* <input
                 type="text"
                 placeholder="Cardholder's Name"
                 className="px-2 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
-              />
-              <div className="flex bg-white border-b-2 focus-within:border-[#333] overflow-hidden">
+              /> */}
+              {/* <div className="flex bg-white border-b-2 focus-within:border-[#333] overflow-hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-12 ml-3"
@@ -128,8 +128,8 @@ const Checkout = () => {
                   placeholder="Card Number"
                   className="px-2 py-3.5 bg-white text-[#333] w-full text-sm outline-none"
                 />
-              </div>
-              <div className="grid grid-cols-2 gap-6">
+              </div> */}
+              {/* <div className="grid grid-cols-2 gap-6">
                 <input
                   type="number"
                   placeholder="EXP."
@@ -140,7 +140,7 @@ const Checkout = () => {
                   placeholder="CVV"
                   className="px-2 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
                 />
-              </div>
+              </div> */}
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -169,7 +169,7 @@ const Checkout = () => {
             </button>
             <button
               type="button"
-              className="min-w-[150px] px-6 py-3.5 text-sm bg-[#333] text-white rounded-md hover:bg-[#111]"
+              className="min-w-[150px] px-6 py-3.5 text-sm  text-white rounded-md "
             >
               Confirm payment $240
             </button>

@@ -15,7 +15,7 @@ class BidList(viewsets.ModelViewSet):
     serializer_class = BidSerializer
 
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ['product_name']
+    search_fields = ['product__name']
     ordering_fields =['createdAt']
 
 
