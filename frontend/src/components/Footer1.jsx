@@ -13,7 +13,7 @@ function Footer() {
   return (
     <>
       <footer className="bg-white">
-        <div className="container mx-auto  py-[]">
+        <div className=" mx-auto  py-[]">
           {/* footer div all */}
           <div className="flex justify-between flex-col md:flex-row  items-center md:items-start text-left">
             {/* logo side */}
