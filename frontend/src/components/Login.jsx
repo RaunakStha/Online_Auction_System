@@ -1,11 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {Link} from 'react-router-dom'
+import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import AuthContext from '../context/Authcontext'
 
 
 function Login() {
-
-  const {loginUser} = useContext(AuthContext)
+  const[visible, setVisible] = useState(false);
+  const {loginUser} = useContext(AuthContext);
   const handleSubmit = e =>{
     e.preventDefault();
     const data = {
@@ -17,7 +18,7 @@ function Login() {
   }
 
   return (
-      <div className='w-full bg-gray-50 dark:bg-gray-900 flex flex-col justify-center items-center'>
+      <div className='w-full bg-[#ffffff] dark:bg-gray-900 flex flex-col justify-center items-center'>
         {/* <div className='relative w-1/2 h-full flex flex-col'>
           <div className='absolute top-[20%] left-[6%] flex flex-col'>
             <h1 className='text-5xl text text-[#4368fa] font-bold my-4'>It’s all about bidding</h1>
@@ -25,29 +26,39 @@ function Login() {
           </div>
           <img src='/images/Bid.jpg'alt=''className='w-full h-full object-cover' />
         </div> */}
-        <h1 className='w-full max-w-[500px] mx-auto text-3xl text-[#060606] font-semibold m-8 flex justify-center'><img src='images/logo.png' className='w-6 h-6 mr-2 mt-2'></img>Online Auction</h1>
+        {/* <h1 className='w-full max-w-[500px] mx-auto text-3xl text-[#060606] font-semibold m-8 flex justify-center'><img src='images/logo.png' className='w-6 h-6 mr-2 mt-2'></img>Online Auction</h1> */}
 
-        <div className='w-1/3 h-full bg-[#ffffff] rounded-lg shadow-xl dark:border dark:bg-gray-800 dark:border-gray-900 flex flex-col p-14 justify-between items-center mb-10'>
+        <div className='w-1/3 h-full bg-[#f6f6f6] rounded-lg shadow-2xl dark:border dark:bg-gray-800 dark:border-gray-900 flex flex-col p-14 justify-between items-center m-10'>
           <div className='w-full flex flex-col max-w-[500px]'>
             <form onSubmit={handleSubmit}>
               <div className='w-full flex flex-col mb-2'>
-                <h3 className='text-3xl font-semibold mb-2 text-center'>Login</h3>
+                <h3 className='text-3xl font-semibold mb-2 text-center text-indigo-600'>Login</h3>
                 <p className='text-base mb-2 text-center'>Welcome! Please enter your details</p>
               </div>
 
               <div className='w-full flex flex-col'>
-                <input 
-                type="email"
-                placeholder="Email" 
-                className='w-full text-black py-2 bg-transparent my-2 border-b border-black outline-none focus:outline-none'
-                name='email'
-                autoComplete='on'/>
+                <div>
+                  <input 
+                  type="email"
+                  placeholder="Email" 
+                  className='w-full text-black py-2 bg-transparent my-2 border-b border-black outline-none focus:outline-none'
+                  name='email'
+                  autoComplete='on'/>
+                </div>
 
-                <input 
-                type="password"
-                placeholder="password"
-                className='w-full text-black py-2 bg-transparent my-2 border-b border-black outline-none focus:outline-none'
-                name='password'/>
+                <div className='flex justify-end'>
+                    <input 
+                    type={visible ? "text" : "password"}
+                    placeholder="password"
+                    className='w-full text-black py-2 bg-transparent my-2 border-b border-black outline-none focus:outline-none'
+                    name='password'/>
+                    <div className='absolute p-4' onClick={() => setVisible(!visible)}>
+                      {
+                        visible ? <RiEyeLine/> : <RiEyeCloseLine/>
+                      }
+                    </div>
+                </div>
+    
               </div>
               <div className="flex items-center justify-between">
                   <div className="flex items-start">
@@ -68,7 +79,7 @@ function Login() {
                   </div>
                   <a
                     href="/forgot-password"
-                    className="text-sm font-medium text-primary-600 hover:underline hover:text-indigo-600 dark:text-primary-500"
+                    className="text-sm font-medium text-indigo-600 hover:underline hover:text-indigo-600 dark:text-primary-500"
                   >
                     Forgot password?
                   </a>
@@ -87,9 +98,9 @@ function Login() {
                 Don't have an account?{" "}
                 <a
                   href="/signup"
-                  className="font-medium text-primary-600 hover:underline hover:text-indigo-600 dark:text-primary-500"
+                  className="font-medium text-indigo-600 hover:underline hover:text-indigo-600 dark:text-primary-500"
                 >
-                  register
+                  Register
                 </a>
               </p>
           </div>

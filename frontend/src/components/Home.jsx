@@ -136,7 +136,7 @@ const Home = () =>{
                     <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'>The <span className='text-indigo-500'>Best</span></h1>
                     <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'> <span className='text-indigo-500'>Deals</span>You Get</h1>
                 </div>
-                <img className='w-full max-h-[500px] object-cover' src="/images/homepic.jpg" alt="/" />
+                <img className='w-full max-h-[400px] object-cover' src="/images/homepic.jpg" alt="/" />
             </div>
             <div className='flex items-center justify-end mt-2 bg-gray-100 dark:bg-gray-800'>
                     <input
@@ -165,7 +165,7 @@ const Home = () =>{
                                                                 alt={product.name}/>
                                                             ))}
                                                         <div className='absolute flex flex-col top-4 right-4'>
-                                                            <a href='#' className='flex items-center'>
+                                                            <a href={`/product/${product.slug}-p-${product._id}`} className='flex items-center'>
                                                                 <div className='relative flex items-center justify-center p-3 mb-3 transition-all translate-x-20 bg-white rounded dark:bg-gray-700 dark:text-white group-hover:translate-x-0 wishlist hover:bg-blue-200 dark:hover:bg-blue-600 group'>
                                                                     <svg
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +185,7 @@ const Home = () =>{
                                                         </div>
     
                                                     </div>
-                                                    <a href='#'>
+                                                    <a href={`/product/${product.slug}-p-${product._id}`}>
                                                         <h2 className='mb-4 text-xl font-bold text-black dark:text-white'>{product.name}</h2>
                                                     </a>
                                                     <div className='h-full pl-2 bg-gray-100 dark:bg-gray-400  items-center mb-6 rounded-md flex  '>
@@ -224,7 +224,7 @@ const Home = () =>{
                                                                 alt={product.name}/>
                                                             ))}
                                                         <div className='absolute flex flex-col top-4 right-4'>
-                                                            <a href='#' className='flex items-center'>
+                                                            <a href={`/product/${product.slug}-p-${product._id}`} className='flex items-center'>
                                                                 <div className='relative flex items-center justify-center p-3 mb-3 transition-all translate-x-20 bg-white rounded dark:bg-gray-700 dark:text-white group-hover:translate-x-0 wishlist hover:bg-blue-200 dark:hover:bg-blue-600 group'>
                                                                     <svg
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -244,7 +244,7 @@ const Home = () =>{
                                                         </div>
     
                                                     </div>
-                                                    <a href='#'>
+                                                    <a href={`/product/${product.slug}-p-${product._id}`}>
                                                         <h2 className='mb-4 text-xl font-bold text-black dark:text-white'>{product.name}</h2>
                                                     </a>
                                                     <div className='h-full pl-2 bg-gray-100 dark:bg-gray-400  items-center mb-6 rounded-md flex  '>
@@ -287,7 +287,7 @@ const Home = () =>{
             </div>
 
 {/* Upcomng Auction section starts from here */}
-            <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
+            {/* <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
                 <div className='p-4 mx-auto max-w-7xl'>
                     <h2 className='pb-2 text-2xl font-bold text-center text-gray-800 md:text-4xl dark:text-gray-400'>Upcoming Auction</h2>
                     <div className='grid grid-cols-1 gap-4 lg:gap-4 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -353,7 +353,7 @@ const Home = () =>{
 
                     </div>
                 </div>
-            </div>
+            </div> */}
 {/* ClosedAuction section starts from here */}
             <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
                 <div className='p-4 mx-auto max-w-7xl'>
@@ -405,7 +405,7 @@ const Home = () =>{
                                                 </div>
                                                 <div className='flex items-center justify-between w-full'>
                                                     <div className='text-xl font-bold text-blue-500 dark:text-blue-300 items-center'>
-                                                        <span>Rs: {product.price}</span>
+                                                        <span>Rs: {product.price.toLocaleString("en-de").replace(".", ",")}</span>
 
                                                     </div>
                                             

@@ -292,3 +292,5 @@ CACHES = {
         'LOCATION': 'celery',
     }
 }
+
+USE_THOUSAND_SEPARATOR = True

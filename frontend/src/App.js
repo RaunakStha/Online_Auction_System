@@ -18,6 +18,7 @@ import Address from "./components/Profile/Address";
 import Checkout from "./components/Checkout";
 import PasswordResetForm from "./components/PasswordResetFrom";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import Contact from "./components/Contact";
 
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
             </Route>
             <Route path="/forgot-password" element={<ForgotPasswordForm/>}/> {/* Add route for forgot password */}
             <Route path="/reset-password/:uid/:token" element={<PasswordResetForm/>}/> {/* Add route for password reset */}
-            
+            <Route path="/contact" element={<Contact/>}/>
             <Route path="/Home" element={<Home/>}/>
             
           </Route>

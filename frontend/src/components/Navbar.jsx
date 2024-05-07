@@ -27,6 +27,9 @@ const Navbar = () => {
     function dashboardHandler(){
         navigate('/dashboard');
     }
+    function contactHandler(){
+        navigate('/contact');
+    }
     const [nav , setNav] = useState(false)
 
     const handleNav = () => {
@@ -46,11 +49,11 @@ const Navbar = () => {
   return (
     <nav className='sticky top-0 bg-slate-100 dark:bg-gray-400 z-50 shadow-md'>
         <div className=' flex justify-between items-center h-15 mx-auto px-4'>
-            <h1 className='w-full max-w-[1000px] text-3xl font-bold flex cursor-pointer'onClick={HomeHandler}><img src='images/logo.png' className='w-10 h-10 mr-2'></img>Online Auction</h1>
+            <h1 className='w-full max-w-[1000px] text-2xl font-bold flex cursor-pointer'onClick={HomeHandler}><img src='images/logo.png' className='w-8 h-8 mr-2 fa-shake fa-gavel fa-solid fa-sharp'></img>Online Auction</h1>
             <ul className='hidden md:flex'>
                 <li className='cursor-pointer hover:text-indigo-600'onClick={HomeHandler}> Home</li>
-                <li className='cursor-pointer hover:text-indigo-600'> About</li>
-                <li className='cursor-pointer hover:text-indigo-600'> Contact</li>
+                {/* <li className='cursor-pointer hover:text-indigo-600'> About</li> */}
+                <li className='cursor-pointer hover:text-indigo-600'onClick={contactHandler}> Contact</li>
             </ul>
                 <div className='hidden md:flex pr-4 '>
                 {token === null &&
@@ -101,10 +104,10 @@ const Navbar = () => {
                 <h1 className=' w-full text-3xl font-bold m-4'>Online Auction</h1>
 
                 <ul className=' uppercase'>
-                <li className=' border-b border-gray-300 cursor-pointer' >Home</li>
+                <li className=' border-b border-gray-300 cursor-pointer'onClick={HomeHandler} >Home</li>
                 <li className=' border-b border-gray-300'>About</li>
                 <li className=' border-b border-gray-300'>Help</li>
-                <li className=' border-b border-gray-300'>Contact</li>
+                <li className=' border-b border-gray-300' onClick={contactHandler}>Contact</li>
                 <div className='  pr-4'>
                     <button className='bg-transparent text-indigo-600 px-8 py-3 mb-4 m-4'>LogIn</button>
                     <button className='px-8 py-3'>Register</button>

@@ -7,7 +7,7 @@ const Mainheader = () =>{
     return <div className="h-screen justify-between flex flex-col">
         <Navbar/>
         <Outlet/>
-        <Footer1 />
+        <Footer1/>
     </div>
 }
 
