@@ -80,7 +80,6 @@ class Product(models.Model):
     
     endingEmailSent = models.BooleanField(default=False)
     lastEmailSent = models.BooleanField(default=False)
-    videoURL = models.FileField(null=True,blank=True, default ="default.mp4", upload_to="products_video")
 
     def __str__(self) -> str:
         return str(self.name)

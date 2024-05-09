@@ -62,7 +62,7 @@ const BiddingDetails = () => {
                 <td className='p-4'>{bid._id}</td>
                 <td className='p-4'><img src={bid.ProductImage} alt={bid.productName} style={{ maxWidth: '100px', maxHeight: '100px' }} /></td>
                 <td className='p-4'>{bid.productName}</td>
-                <td className='p-4'>{bid.bid}</td>
+                <td className='p-4'>{bid.bid.toLocaleString('en-ds')}</td>
                 <td className='p-4'>{formatLocalDateTime(bid.createdAt)}</td>
                 <td>{bid.seller}</td>
               </tr>

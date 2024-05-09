@@ -104,7 +104,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['_id','images','slug','name','seller','videoURL','description','productStatus','useStatus','province','district','category','price','currentHighestBid','startDate','endDate','totalBids']
+        fields = ['_id','images','slug','name','seller','description','productStatus','useStatus','province','district','category','price','currentHighestBid','startDate','endDate','totalBids']
 
     def create(self, validated_data):
        images = self.context['request'].FILES.getlist('images') 

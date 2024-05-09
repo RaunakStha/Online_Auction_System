@@ -47,18 +47,18 @@ const Navbar = () => {
     }
    
   return (
-    <nav className='sticky top-0 bg-slate-100 dark:bg-gray-400 z-50 shadow-md'>
+    <nav className='sticky top-0 bg-gradient-to-r from-indigo-600 to-[#2b2b2b] dark:bg-gray-400 z-50 shadow-md'>
         <div className=' flex justify-between items-center h-15 mx-auto px-4'>
-            <h1 className='w-full max-w-[1000px] text-2xl font-bold flex cursor-pointer'onClick={HomeHandler}><img src='images/logo.png' className='w-8 h-8 mr-2 fa-shake fa-gavel fa-solid fa-sharp'></img>Online Auction</h1>
+            <h1 className='w-full max-w-[1000px] text-2xl font-bold flex cursor-pointer text-[#ffffff]'onClick={HomeHandler}><img src='images/logo.png' className='w-8 h-8 mr-2 fa-shake fa-gavel fa-solid fa-sharp '></img>Online Auction</h1>
             <ul className='hidden md:flex'>
-                <li className='cursor-pointer hover:text-indigo-600'onClick={HomeHandler}> Home</li>
+                <li className='cursor-pointer text-[#ffffff] hover:text-[#F3B552]'onClick={HomeHandler}> Home</li>
                 {/* <li className='cursor-pointer hover:text-indigo-600'> About</li> */}
-                <li className='cursor-pointer hover:text-indigo-600'onClick={contactHandler}> Contact</li>
+                <li className='cursor-pointer text-[#ffffff] hover:text-[#F3B552]'onClick={contactHandler}> Contact</li>
             </ul>
                 <div className='hidden md:flex pr-4 '>
                 {token === null &&
                 <>
-                    <button className='bg-transparent hover:bg-indigo-600 text-indigo-600 hover:text-white mr-4 w-[100px]' onClick={loginHandler}>LogIn</button>
+                    <button className='bg-transparent hover:bg-indigo-600 text-[#F3B552] hover:text-white mr-4 w-[100px]' onClick={loginHandler}>LogIn</button>
                     <button className='px-8 py-2' onClick={signupHandler}>Register</button>
                 </>
                     
@@ -66,23 +66,23 @@ const Navbar = () => {
 
                 {token !== null &&
                 <>
-                    <div className='group relative dropdown pr-3 flex justify-between item-center hover:bg-gray-100 cursor-pointer'>
+                    <div className='group relative dropdown pr-3 flex justify-between item-center cursor-pointer'>
                         
                         {/* <img src="images\user.png" alt="" className='w-3 h-3 m-2'/> */}
-                        <span className=''><i className='fas fa-user'></i> {username}
+                        <span className='text-[#ffffff]'><i className='fas fa-user text-[#F3B552]'></i> {username}
                             <div className='group-hover:block dropdown-menu absolute  hidden h-auto right-0'>
-                                <ul className='top-0 w-40 bg-gray-100 shadow  py-4 rounded-lg'>
+                                <ul className='top-0 w-40 bg-gray-200 shadow  py-4 rounded-lg'>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={dashboardHandler}> Dashboard</a>
+                                        <a className='block hover:text-[#F3B552] cursor-pointer text-[#2b2b2b]' onClick={dashboardHandler}> Dashboard</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={sellProductHandler}> Sell a Product</a>
+                                        <a className='block hover:text-[#F3B552] cursor-pointer text-[#2b2b2b]' onClick={sellProductHandler}> Sell a Product</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={profileHandler}> Profile</a>
+                                        <a className='block hover:text-[#F3B552] cursor-pointer text-[#2b2b2b]' onClick={profileHandler}> Profile</a>
                                     </li>
                                     <li className='py-1'>
-                                        <a className='block hover:text-indigo-600 cursor-pointer' onClick={logoutUser}> Logout</a>
+                                        <a className='block hover:text-[#F3B552] cursor-pointer text-[#2b2b2b]' onClick={logoutUser}> Logout</a>
                                     </li>
                                 </ul>
                             </div>

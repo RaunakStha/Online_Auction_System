@@ -12,8 +12,8 @@ function Footer() {
   ];
   return (
     <>
-      <footer className="bg-[#2b2b2b] pt-2">
-        <div className=" mx-auto  py-[]">
+      <footer className="bg-[#2b2b2b] md:h-auto pt-2">
+        <div className=" md:mx-auto  py-[]">
           {/* footer div all */}
           <div className="flex justify-between flex-col md:flex-row  items-center md:items-start text-left">
             {/* logo side */}

@@ -1,16 +1,18 @@
 import React from "react";
 import { useState, useContext } from "react";
 import AuthContext from '../context/Authcontext'
+import Swal from "sweetalert2";
 
 
 export default function Signup(){
 
-  const [email, setEmail] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [password2, setPassword2] = useState("")
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const[error, setError] = useState("");
 
-  const {registerUser} = useContext(AuthContext)
+  const {registerUser} = useContext(AuthContext);
 
 
   // console.log(email)
@@ -20,12 +22,20 @@ export default function Signup(){
 
   const handleSubmit = async e =>{
     e.preventDefault();
+    if (password !== password2){
+      setError('Passwords do not match');
+      return;
+    }
+    if (password.length < 8){
+      setError('Password must be at least 8 characters');
+      return;
+    }
     registerUser(email, username, password, password2)
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto lg:py-0">
+    <div className="bg-[#e7e7e7] dark:bg-gray-900 ">
+      <div className="  flex flex-col items-center justify-center px-6 py-6 mx-auto lg:py-0 mt-8">
         {/* <a
           href="#"
           className="flex m-8 items-center justify-center mb-6 text-3xl font-semibold text-gray-900 dark:text-white"
@@ -37,11 +47,12 @@ export default function Signup(){
           />
           Online Auction
         </a> */}
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 m-10">
+        <div className="w-full bg-[#f6f6f6] rounded-lg shadow-2xl dark:border dark:bg-gray-800 dark:border-gray-900 md:mt-0 sm:max-w-md xl:p-0  m-10">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create and account
+            <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Create an account
             </h1>
+            
             <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -110,6 +121,7 @@ export default function Signup(){
                   onChange={e => setPassword2(e.target.value)}
                 />
               </div>
+              {error && <p className="text-red-500 text-sm">! {error}</p>}
               <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
@@ -120,6 +132,7 @@ export default function Signup(){
                     required
                   />
                 </div>
+                
                 <div className="ml-3 text-sm">
                   <label
                     htmlFor="terms"

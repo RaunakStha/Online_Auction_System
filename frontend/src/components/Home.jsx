@@ -129,16 +129,16 @@ const Home = () =>{
     };
 
     return ( 
-        <div className='w-full'>
+        <div className='w-full bg-[#e7e7e7]'>
             <div className='max-h-[500px] relative'>
                 
                 <div className='absolute w-full h-full text-gray-200  bg-black/40 flex flex-col justify-center'>
-                    <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'>The <span className='text-indigo-500'>Best</span></h1>
-                    <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'> <span className='text-indigo-500'>Deals</span>You Get</h1>
+                    <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'>The <span className='text-[#F3B552]'>Best</span></h1>
+                    <h1 className='px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold'> <span className='text-[#F3B552]'>Deals</span>You Get</h1>
                 </div>
                 <img className='w-full max-h-[400px] object-cover' src="/images/homepic.jpg" alt="/" />
             </div>
-            <div className='flex items-center justify-end mt-2 bg-gray-100 dark:bg-gray-800'>
+            <div className='flex items-center justify-end mt-2 bg-[#e7e7e7] dark:bg-gray-800'>
                     <input
                             type='search'
                             placeholder='Search products...'
@@ -148,10 +148,10 @@ const Home = () =>{
                             className='px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 w-[20%]'
                     />
             </div>
-            <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
+            <div className='flex items-center bg-[#e7e7e7] dark:bg-gray-800 '>
                 <div className='p-4 mx-auto max-w-7xl'>
 
-                    <h2 className='pb-2 text-2xl font-bold text-center text-gray-800 md:text-4xl dark:text-gray-400'>Ongoing Auction</h2>
+                    <h2 className='pb-2 text-2xl font-bold  text-gray-800 md:text-4xl text-start dark:text-gray-400'>Ongoing Auction</h2>
                             <div className='grid grid-cols-1 gap-4 lg:gap-4 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4'>
                                 {
                                     results.length === 0 ? (
@@ -202,7 +202,7 @@ const Home = () =>{
                                                     </div>
                                                     <div className='flex items-center justify-between w-full'>
                                                         <div className='text-xl font-bold text-blue-500 dark:text-blue-300 items-center'>
-                                                            <span>Rs:{product.price}</span>
+                                                            <span>Rs:{product.price.toLocaleString("en-de").replace(".", ",")}</span>
     
                                                         </div>
                                                         <Link to={`/product/${product.slug}-p-${product._id}`}>
@@ -261,7 +261,7 @@ const Home = () =>{
                                                     </div>
                                                     <div className='flex items-center justify-between w-full'>
                                                         <div className='text-xl font-bold text-blue-500 dark:text-blue-300 items-center'>
-                                                            <span>Rs:{product.price}</span>
+                                                            <span>Rs:{product.price.toLocaleString("en-de").replace(".", ",")}</span>
     
                                                         </div>
                                                         <Link to={`/product/${product.slug}-p-${product._id}`}>
@@ -355,9 +355,9 @@ const Home = () =>{
                 </div>
             </div> */}
 {/* ClosedAuction section starts from here */}
-            <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
+            <div className='flex items-center bg-[#e7e7e7] dark:bg-gray-800 mb-8'>
                 <div className='p-4 mx-auto max-w-7xl'>
-                    <h2 className='pb-2 text-2xl font-bold text-center text-gray-800 md:text-4xl dark:text-gray-400'>Closed Auction</h2>
+                    <h2 className='pb-2 text-2xl font-bold text-gray-800 md:text-4xl dark:text-gray-400'>Closed Auction</h2>
                     <div className='grid grid-cols-1 gap-4 lg:gap-4 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4'>
                                 {
                                     closedAuctions.map((product) => (

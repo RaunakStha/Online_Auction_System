@@ -18,7 +18,7 @@ function Login() {
   }
 
   return (
-      <div className='w-full bg-[#ffffff] dark:bg-gray-900 flex flex-col justify-center items-center'>
+      <div className='w-full bg-[#e7e7e7] dark:bg-gray-900 flex flex-col justify-center items-center'>
         {/* <div className='relative w-1/2 h-full flex flex-col'>
           <div className='absolute top-[20%] left-[6%] flex flex-col'>
             <h1 className='text-5xl text text-[#4368fa] font-bold my-4'>It’s all about bidding</h1>
