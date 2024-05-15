@@ -46,10 +46,31 @@ export const AuthProvider = ({ children }) => {
         });
         const data = await response.json();
         if (response.ok) {
+            swal.fire({
+                title: 'Success!',
+                text: 'OTP has been sent to your email.',
+                icon: 'success',
+                toast: true,
+                timer: 3000,
+                position: 'top-right',
+                showConfirmButton: false,
+                timerProgressBar: true
+            })
             // Assuming the OTP is sent successfully, redirect to OTP input page
             navigate('/otp-verify', { state: { email } });
         } else {
             // Handle errors
+            swal.fire({
+                title: 'Error!',
+                text: data.detail || 'Invalid credentials',
+                icon: 'error',
+                toast: true,
+                timer: 3000,
+                position: 'top-right',
+                showConfirmButton: false,
+                timerProgressBar: true
+                
+            })
             console.error('Login Failed:', data);
         }
     };

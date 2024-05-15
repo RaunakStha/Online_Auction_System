@@ -16,23 +16,23 @@ function Login() {
 
     if (email && password) {
       // Using loginUser function from AuthContext
-      const response = await loginUser(email, password);
+       await loginUser(email, password);
       // Assume loginUser returns true on success or an error message on failure
-      if (response === true) {
-        swal.fire({
-          title: 'Success!',
-          text: 'OTP has been sent to your email. Please verify to continue.',
-          icon: 'success',
-          timer: 3000
-        });
-      } else {
-        swal.fire({
-          title: 'Error!',
-          text: response || 'An unexpected error occurred',
-          icon: 'error',
-          timer: 3000
-        });
-      }
+      // if (response == true) {
+      //   swal.fire({
+      //     title: 'Success!',
+      //     text: 'OTP has been sent to your email. Please verify to continue.',
+      //     icon: 'success',
+      //     timer: 3000
+      //   });
+      // } else {
+      //   swal.fire({
+      //     title: 'Error!',
+      //     text: response || 'An unexpected error occurred',
+      //     icon: 'error',
+      //     timer: 3000
+      //   });
+      // }
     } else {
       swal.fire({
         title: 'Error!',

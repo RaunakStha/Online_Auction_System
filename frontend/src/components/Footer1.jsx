@@ -63,8 +63,8 @@ function Footer() {
               <p className="text-[16px] hover:text-[#F3B552] cursor-pointer text-[#ffffff] font-medium hover:font-bold">
                 Home
               </p>
-              <p className="text-[16px] hover:text-[#F3B552] cursor-pointer text-[#ffffff] font-medium hover:font-bold">
-                Contact
+              <p className="text-[16px] hover:text-[#F3B552] cursor-pointer text-[#ffffff] font-medium hover:font-bold"><a href="/contact">Contact</a>
+                
               </p>
               {/* <p className="text-[16px] hover:text-indigo-600 cursor-pointer text-[#646464] font-medium hover:font-bold">
                 
