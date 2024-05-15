@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.utils.text import slugify
 from django.utils import timezone
-
+import datetime
+import uuid
 
 class Status(models.IntegerChoices):
     Active = 1
@@ -14,16 +15,23 @@ class User(AbstractUser):
 
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+    otp_created_at = models.DateTimeField(null=True, blank=True)
+    verification_token = models.UUIDField(default=uuid.uuid4, editable=False)
+    is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    def otp_is_valid(self):
+        return self.otp_created_at and (timezone.now() - self.otp_created_at) <= datetime.timedelta(minutes=5)
 
     def __str__(self):
         return self.username
     
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
+    
     full_name = models.CharField(max_length=300)
     bio = models.CharField(max_length=300)
        # location = models.CharField(max_length=100)

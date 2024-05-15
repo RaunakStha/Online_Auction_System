@@ -27,63 +27,62 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (authTokens) {
+            localStorage.setItem('authTokens', JSON.stringify(authTokens));
+        } else {
+            localStorage.removeItem('authTokens');
+        }
+    }, [authTokens]);
+
     const loginUser = async (email, password) => {
-        const response = await fetch("http://127.0.0.1:8000/api/token/", {
-            method: "POST",
-            headers:{
-                "Content-Type":"application/json"
+        // Placeholder: replace with your actual fetch request to login endpoint
+        const response = await fetch('http://127.0.0.1:8000/api/token/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email, password
-            })
+            body: JSON.stringify({ email, password })
         });
-        
         const data = await response.json();
-    
-        if(response.status === 200){
-            // Check if the user is an admin
-            const isAdmin = data.user_group === "Admin"; // Assuming your API response provides user group information
-            const isSuperuser = data.is_superuser; // Assuming your API response provides superuser status
-    
-            if(isAdmin || isSuperuser) {
-                // Show error message and do not login
-                swal.fire({
-                    title: "Admin or Superuser Login Restricted",
-                    text: "Admins and superusers are not allowed to log in through this interface.",
-                    icon: "error",
-                    toast: true,
-                    timer: 4000,
-                    position: 'top-right',
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                });
-            } else {
-                console.log("Logged In");
-                setAuthTokens(data);
-                setUser(jwtDecode(data.access));
-                localStorage.setItem("authTokens", JSON.stringify(data));
-                navigate("/Home");
-                swal.fire({
-                    title: "Login Successful",
-                    icon: "success",
-                    toast: true,
-                    timer: 4000,
-                    position: 'top-right',
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                });
-            }
-        } else {    
-            console.log(response.status);
-            console.log("there was a server issue");
+        if (response.ok) {
+            // Assuming the OTP is sent successfully, redirect to OTP input page
+            navigate('/otp-verify', { state: { email } });
+        } else {
+            // Handle errors
+            console.error('Login Failed:', data);
+        }
+    };
+    const verifyOtp = async (email, otp) => {
+        const response = await fetch('http://127.0.0.1:8000/api/verify-otp/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, otp })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            setAuthTokens(data);
             swal.fire({
-                title: "Username or password does not exist",
-                icon: "error",
+                title: 'Success!',
+                text: 'OTP verification successful. You are now logged in.',
+                icon: 'success',
                 toast: true,
-                timer: 4000,
+                timer: 3000,
                 position: 'top-right',
-                timerProgressBar: true,
                 showConfirmButton: false,
+                timerProgressBar: true
+            });
+            navigate('/');
+        } else {
+            swal.fire({
+                title: 'Error!',
+                text: data.error || 'Invalid OTP',
+                icon: 'error',
+                toast: true,
+                timer: 3000,
+                position: 'top-right',
+                showConfirmButton: false,
+                timerProgressBar: true
             });
         }
     };
@@ -200,6 +199,7 @@ export const AuthProvider = ({ children }) => {
         loginUser,
         logoutUser,
         makeBid,
+        verifyOtp,
     }
 
     useEffect(() => {

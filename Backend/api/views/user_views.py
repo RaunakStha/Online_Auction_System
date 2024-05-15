@@ -1,8 +1,9 @@
 from rest_framework.exceptions import NotFound
 from django.shortcuts import render
-
+from django.http import HttpResponse
 from api.models import Profile, User
 from api.serializer import UserSerializer, MyTokenObtainPairSerializer, RegisterSerilizer, ProfileSerializer,PasswordResetRequestSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from django.utils.encoding import force_str
 from rest_framework.decorators import api_view, permission_classes
@@ -14,9 +15,13 @@ from rest_framework import status
 from rest_framework.views import APIView
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import smart_str, force_str,smart_bytes, force_bytes
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import send_mail
+import random
+from django.utils import timezone
+from django.conf import settings
+from ..tasks import send_verification_email, send_otp_email
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -26,17 +31,86 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return self.request.user
 
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+class MyTokenObtainPairView(APIView):
+    permission_classes = [AllowAny]
 
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(email=email, password=password)
+        if user and user.is_active:
+            otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+            user.otp = otp
+            user.otp_created_at = timezone.now()
+            user.save()
+            send_otp_email(user.email, otp)  # Assuming you have the email in your task parameters
+            return Response({"message": "OTP has been sent to your email."}, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid credentials or account not verified"}, status=status.HTTP_400_BAD_REQUEST)
+
+class OTPVerificationView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        otp = request.data.get('otp')
+        try:
+            user = User.objects.get(email=email)
+            if user.otp == otp and user.otp_is_valid():
+                user.otp = None
+                user.otp_created_at = None
+                user.save()
+                refresh = MyTokenObtainPairSerializer.get_token(user)
+                return Response({
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh)
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Invalid or expired OTP'}, status=400)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=404)
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    # permission_classes = (AllowAny ,)
     serializer_class = RegisterSerilizer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "Registration successful, please check your email to verify your account."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class VerifyAccountView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        try:
+            user = User.objects.get(verification_token=token)
+            if not user.is_verified:
+                user.is_verified = True
+                user.is_active = True
+                user.save()
+                return Response({"message": "Your account has been verified. You can now login."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "This account is already verified."}, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({"error": "Invalid verification link."}, status=status.HTTP_404_NOT_FOUND)
+
+class ResendVerificationEmailView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            user = User.objects.get(email=email)
+            if not user.is_verified:
+                send_verification_email(user.id, str(user.verification_token))
+                return Response({'message': 'Verification email has been resent.'}, status=status.HTTP_200_OK)
+            return Response({'message': 'This email is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class UserProfileDetailView(APIView):

@@ -5,8 +5,9 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from celery import shared_task
-from .utils import send_ending_email, send_winner_email, send_loser_email, create_order, send_email_cleint
-from .models import Product, Status,Bid
+from django.contrib.auth import get_user_model
+from .utils import  send_email_cleint
+from .models import Product, Status,Bid, User
 
 
 @shared_task
@@ -39,3 +40,26 @@ def send_end_auction_email(product_id, highest_bidder_email):
     )
 
 
+
+@shared_task
+def send_verification_email(user_id, token):
+    user = User.objects.get(pk=user_id)
+    print(f"Sending email to {user.email} with token {token}")
+    """
+    Sends a verification email with a link to verify the user's email address.
+    """
+    subject = "Verify your email"
+    plain_message = f"Please click on the link to verify your email: http://localhost:3000/verify/{token}/"
+    recipient_list = [user.email]
+    print ("send",user.email)
+    send_email_cleint(subject, plain_message, recipient_list)
+
+@shared_task
+def send_otp_email(email,otp):
+    # user = User.objects.get(pk=user_id)
+    """
+    Sends an OTP email to the user.
+    """
+    subject = "Your Login OTP"
+    message = f"Your OTP is: {otp}"
+    send_email_cleint(subject, message, [email])

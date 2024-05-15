@@ -19,7 +19,9 @@ import Checkout from "./components/Checkout";
 import PasswordResetForm from "./components/PasswordResetFrom";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import Contact from "./components/Contact";
-
+import VerifyOTP from "./components/VerifyOTP";
+import VerifyAccount from "./components/VerifyAccount";
+import ResendVerificationEmail from "./components/ResendVerificationEmail";
 
 function App() {
   return (
@@ -29,8 +31,10 @@ function App() {
           <Route path="/" element={<Mainheader />}>
             <Route index element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/otp-verify" element={<VerifyOTP/>}/>
             <Route path="/signup" element={<Signup/>}/>
-            
+            <Route path="/verify/:token" element={<VerifyAccount />} />
+            <Route path="/resend-verification-email" element={<ResendVerificationEmail />} />
             <Route path="/product/:productParams" element={<Productdetails/>} >
               
             </Route>

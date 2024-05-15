@@ -1,21 +1,47 @@
 import React, { useContext, useState } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Navigate} from 'react-router-dom'
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import AuthContext from '../context/Authcontext'
-
+const swal = require('sweetalert2')
 
 function Login() {
   const[visible, setVisible] = useState(false);
   const {loginUser} = useContext(AuthContext);
-  const handleSubmit = e =>{
+
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      password: e.target.password.value
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (email && password) {
+      // Using loginUser function from AuthContext
+      const response = await loginUser(email, password);
+      // Assume loginUser returns true on success or an error message on failure
+      if (response === true) {
+        swal.fire({
+          title: 'Success!',
+          text: 'OTP has been sent to your email. Please verify to continue.',
+          icon: 'success',
+          timer: 3000
+        });
+      } else {
+        swal.fire({
+          title: 'Error!',
+          text: response || 'An unexpected error occurred',
+          icon: 'error',
+          timer: 3000
+        });
+      }
+    } else {
+      swal.fire({
+        title: 'Error!',
+        text: 'Please enter both email and password.',
+        icon: 'error',
+        timer: 3000
+      });
     }
-    data.email.length >0 && loginUser(data.email, data.password)
-    // console.log(data)
-  }
+  };
 
   return (
       <div className='w-full bg-[#e7e7e7] dark:bg-gray-900 flex flex-col justify-center items-center'>

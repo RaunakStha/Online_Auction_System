@@ -7,9 +7,12 @@ from ..views.user_views import *
 from django.contrib.auth import views as auth_views
 
 urlpatterns=[
-    path("token/", MyTokenObtainPairView.as_view()),
+    path("token/", MyTokenObtainPairView.as_view(), name='login'),
+    path("verify-otp/", OTPVerificationView.as_view(), name='verify_otp'),
     path("token/refresh/", TokenRefreshView.as_view()),
     path("register/", RegisterView.as_view()),
+    path('verify/<uuid:token>/', VerifyAccountView.as_view(), name='verify_account'),
+    path('resend-verification-email/', ResendVerificationEmailView.as_view(), name='resend_verification_email'),
     path("addresses/", include ('api.urls.address_urls')),
     path("bids/", include ('api.urls.bid_urls')),
     path("orders/", include ('api.urls.order_urls')),

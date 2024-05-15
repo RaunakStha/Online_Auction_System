@@ -4,8 +4,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
-
-
+from django.core.mail import send_mail
+from django.conf import settings
+from .tasks import send_verification_email
 from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
             model = User
             fields = ('id', 'username', 'email', 'password')
             extra_kwargs = {'password': {'write_only': True}}
+
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -53,7 +55,7 @@ class RegisterSerilizer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('email', 'username', 'password', 'password2')
-        
+        extra_kwargs = {'password': {'write_only': True}}
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
@@ -65,14 +67,15 @@ class RegisterSerilizer(serializers.ModelSerializer):
         return attrs
         
     def create(self, validated_data):
+        validated_data.pop('password2')
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email'], 
+            email=validated_data['email'],
+            is_active=False  # Initially set to False, activate on verification
         )
-        
         user.set_password(validated_data['password'])
         user.save()
-        
+        send_verification_email(user.id, str(user.verification_token))
         return user
     
 
@@ -250,4 +253,4 @@ class ConfirmedOrderSerializer(OrderDetailSerializer):
 
     class Meta:
         model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer', 'confirmedAt', 'address', 'isShipping', 'shippingAt', 'shippingCode', 'isDelivered', 'deliveredAt']
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer', 'conformedAt', 'address', 'isShipping', 'shippingAt', 'shippingCode', 'isDelivered', 'deliveredAt']

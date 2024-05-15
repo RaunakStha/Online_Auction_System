@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from '../context/Authcontext'
 import Swal from "sweetalert2";
 
@@ -14,23 +15,51 @@ export default function Signup(){
 
   const {registerUser} = useContext(AuthContext);
 
-
+  const navigate = useNavigate();
   // console.log(email)
   // console.log(username)
   // console.log(password)
   // console.log(password2)
 
-  const handleSubmit = async e =>{
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (password !== password2){
+    if (password !== password2) {
       setError('Passwords do not match');
       return;
     }
-    if (password.length < 8){
+    if (password.length < 8) {
       setError('Password must be at least 8 characters');
       return;
     }
-    registerUser(email, username, password, password2)
+    
+    try {
+      await registerUser(email, username, password, password2);
+      Swal.fire({
+        title: 'Registration Successful!',
+        text: 'Please check your email to verify your account before logging in.',
+        icon: 'success',
+        toast: true,
+        timer: 4000,
+        position: 'top-right',
+        showconfirmButtonText: false,
+        timerProgressBar: true
+      });
+        navigate('/login')
+        // if (result.isConfirmed) {
+        //   window.location.href = '/login'; // Or use navigate('/login') if using react-router-dom v6
+        // }
+    } catch (error) {
+      Swal.fire({
+        title: 'Registration Failed',
+        text: 'An error occurred while trying to create your account. Please try again.',
+        icon: 'error',
+        toast: true,
+        showconfirmButtonText: false,
+        timer: 4000,
+        position: 'top-right',
+        timerProgressBar: true
+      });
+    }
   }
 
   return (
