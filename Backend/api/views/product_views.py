@@ -8,6 +8,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from ..utils import create_order
 
 
 
@@ -53,6 +54,7 @@ def end_auction(request, product_id):
         # Call Celery task to send end auction email asynchronously
             send_end_auction_email(product_id, highest_bidder_email)
             # Once email is sent successfully, update the flag
+            create_order(product,highest_bid.user)
             product.endingEmailSent = True
             product.save()
 

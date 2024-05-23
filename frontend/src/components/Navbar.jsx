@@ -52,7 +52,7 @@ const Navbar = () => {
             <h1 className='w-full max-w-[1000px] text-2xl font-bold flex cursor-pointer text-[#ffffff]'onClick={HomeHandler}><img src='images/logo.png' className='w-8 h-8 mr-2 fa-shake fa-gavel fa-solid fa-sharp '></img>Online Auction</h1>
             <ul className='hidden md:flex'>
                 <li className='cursor-pointer text-[#ffffff] hover:text-[#F3B552]'onClick={HomeHandler}> Home</li>
-                {/* <li className='cursor-pointer hover:text-indigo-600'> About</li> */}
+                <li className='cursor-pointer text-[#ffffff] hover:text-[#F3B552]'> About</li>
                 <li className='cursor-pointer text-[#ffffff] hover:text-[#F3B552]'onClick={contactHandler}> Contact</li>
             </ul>
                 <div className='hidden md:flex pr-4 '>

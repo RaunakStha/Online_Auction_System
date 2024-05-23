@@ -88,14 +88,14 @@ def send_email_cleint(mail_subject, message, user_list):
 #     return response
 
 
-# def create_order(product, winner):
-#     new_order = Order.objects.create(
-#         buyer = winner,
-#         seller = product.user,
-#         product = product,
-#     )
+def create_order(product, winner):
+    new_order = Order.objects.create(
+        buyer = winner,
+        seller = product.user,
+        product = product,
+    )
 
-#     new_order.save()
+    new_order.save()
 
-#     return "New order created."
+    return "New order created."
 

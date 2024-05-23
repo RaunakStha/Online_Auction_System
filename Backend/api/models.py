@@ -34,7 +34,7 @@ class Profile(models.Model):
     
     full_name = models.CharField(max_length=300)
     bio = models.CharField(max_length=300)
-       # location = models.CharField(max_length=100)
+       
     image = models.ImageField(null=True, blank=True, upload_to="user_images")
     verified = models.BooleanField(default=False)
         # birth_date = models.DateField(null=True, blank=True)
