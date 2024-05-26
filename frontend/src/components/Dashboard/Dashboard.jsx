@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 function Dashboard() {
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <nav className="bg-gray-800 w-64 px-4 py-8">
         {/* Sidebar navigation */}
         <div className="text-white mb-8">

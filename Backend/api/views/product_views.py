@@ -28,7 +28,7 @@ class ProductDetail(RetrieveUpdateDestroyAPIView):
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from ..tasks import send_end_auction_email
+from ..tasks import send_end_auction_email, send_bid_lost_email
 
 @api_view(['POST'])
 def end_auction(request, product_id):
@@ -42,7 +42,8 @@ def end_auction(request, product_id):
     product.save()
 
     # Get the highest bid for the product
-    highest_bid = Bid.objects.filter(product=product).order_by('-bid').first()
+    all_bids = Bid.objects.filter(product=product).order_by('-bid')
+    highest_bid = all_bids.first()
 
     if highest_bid:
         highest_bidder_email = highest_bid.user.email
@@ -57,6 +58,10 @@ def end_auction(request, product_id):
             create_order(product,highest_bid.user)
             product.endingEmailSent = True
             product.save()
+
+            other_bidders  = all_bids.exclude(user = highest_bid.user)
+            for bid in other_bidders:
+                send_bid_lost_email(bid.user.email,product_id)
 
     serializer = ProductSerializer(product)
     return Response(serializer.data)

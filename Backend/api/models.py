@@ -164,3 +164,11 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
 
+# class order_details(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     price = models.IntegerField(Product.currentHighestBid)
+    
+#     _id = models.AutoField(primary_key=True, editable=False)
+#     def __str__(self) -> str:
+#         return f'{self.product.name} - {self.quantity}x{self.price}'

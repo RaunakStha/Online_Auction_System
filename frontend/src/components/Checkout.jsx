@@ -244,6 +244,7 @@ const Checkout = () => {
                   Order Summary
                 </h2>
                 {userProducts.map((product, index) => (
+                  
                 <div className="space-y-6 mt-10" key={index}>
                   
                     <div className="grid sm:grid-cols-2 items-start gap-6" >
@@ -255,6 +256,7 @@ const Checkout = () => {
                           className="w-full object-contain"
                         />
                         )}
+                        {console.log(userProducts,"scbsac")}
                       </div>
                       <div>
                         <h3 className="text-base text-[#333]">
@@ -263,9 +265,6 @@ const Checkout = () => {
                         <ul className="text-xs text-[#333] space-y-2 mt-2">
                           <li className="flex flex-wrap gap-4">
                             Seller <span className="ml-auto">{product.seller}</span>
-                          </li>
-                          <li className="flex flex-wrap gap-4">
-                            Quantity <span className="ml-auto">2</span>
                           </li>
                           <li className="flex flex-wrap gap-4">
                             Total Price <span className="ml-auto">Rs {product.paidPrice}</span>

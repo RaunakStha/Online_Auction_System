@@ -26,17 +26,17 @@ def send_end_auction_email(product_id, highest_bidder_email):
         'highest_bid': product.currentHighestBid,
         'price': product.price,
         'description': product.description,
-        'image': product.images,
     }
     html_message = render_to_string('end_auction.html', context)
     plain_message = strip_tags(html_message)
-    recipient_list=[highest_bidder_email]
-    print(recipient_list)
+    # recipient_list=[highest_bidder_email]
+    print([highest_bidder_email])
     # Send email
     send_email_cleint(
         subject,
-        plain_message,  
-        recipient_list,
+        plain_message,
+        html_message,  
+        [highest_bidder_email]
     )
 
 
@@ -45,14 +45,19 @@ def send_end_auction_email(product_id, highest_bidder_email):
 def send_verification_email(user_id, token):
     user = User.objects.get(pk=user_id)
     print(f"Sending email to {user.email} with token {token}")
-    """
-    Sends a verification email with a link to verify the user's email address.
-    """
+
     subject = "Verify your email"
-    plain_message = f"Please click on the link to verify your email: http://localhost:3000/verify/{token}/"
+    context = {
+        'username': user.username,
+        'token': token
+    }
+    html_message = render_to_string('activate_email.html', context)
+    plain_message = strip_tags(html_message)
     recipient_list = [user.email]
-    print ("send",user.email)
-    send_email_cleint(subject, plain_message, recipient_list)
+
+    # Correct function call with all required arguments
+    send_email_cleint(subject, plain_message, html_message, recipient_list)
+    print("Email sent to", user.email)
 
 @shared_task
 def send_otp_email(email,otp):
@@ -61,5 +66,32 @@ def send_otp_email(email,otp):
     Sends an OTP email to the user.
     """
     subject = "Your Login OTP"
-    message = f"Your OTP is: {otp}"
-    send_email_cleint(subject, message, [email])
+    context= {'otp': {otp}}
+    html_message = render_to_string('otp_email.html',context)
+    plain_message = strip_tags(html_message)
+    send_email_cleint(subject, plain_message,html_message,[email])
+
+@shared_task
+def send_bid_lost_email(email, product_id):
+    # Assuming product details are needed in the email
+    product = Product.objects.get(pk=product_id)
+    subject = "Auction Ended for Product: {}".format(product.name)
+    context = {
+        'username': User.username,
+        'product': product,
+        'highest_bid': product.currentHighestBid,
+        'price': product.price,
+        'description': product.description,
+    }
+    html_message = render_to_string('loser_email.html', context)
+    plain_message = strip_tags(html_message)
+    # recipient_list=[email]
+    print([email])
+    # Send email
+    send_email_cleint(
+        subject,
+        plain_message,  
+        html_message,
+        [email]
+    )
+

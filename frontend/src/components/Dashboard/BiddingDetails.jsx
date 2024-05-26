@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from "../../context/Authcontext";
 import Swal from 'sweetalert2';
-
+import DataTable from 'datatables.net-dt';
 const BiddingDetails = () => {
   const { authTokens } = useContext(AuthContext);
   const [biddingDetails, setBiddingDetails] = useState([]);
   const [error, setError] = useState(null);
-
+  let table = new DataTable('#myTable');
   useEffect(() => {
     const fetchBiddingDetails = async () => {
       try {
@@ -39,32 +39,33 @@ const BiddingDetails = () => {
   };
 
   return (
-    <div>
+    <div className=''>
       <h1 className='font-semibold mb-6 text-xl justify-items-center'>Bidding Details</h1>
       {error ? (
         <p>{error}</p>
       ) : biddingDetails.length === 0 ? (
         <p>No bidding details available.</p>
       ) : (
-        <table>
-          <thead>
+        <table className='w-full display'  id='myTable'>
+          <thead className=''>
             <tr>
                 <th>ID</th>
                 <th>Image</th>
               <th>Product</th>
               <th>Bidden Amount</th>
               <th>Time</th>
+              
             </tr>
           </thead>
-          <tbody>
+          <tbody className='p-6'>
             {biddingDetails.map((bid) => (
               <tr className='' key={bid._id}>
-                <td className='p-4'>{bid._id}</td>
-                <td className='p-4'><img src={bid.ProductImage} alt={bid.productName} style={{ maxWidth: '100px', maxHeight: '100px' }} /></td>
-                <td className='p-4'>{bid.productName}</td>
-                <td className='p-4'>{bid.bid.toLocaleString('en-ds')}</td>
-                <td className='p-4'>{formatLocalDateTime(bid.createdAt)}</td>
-                <td>{bid.seller}</td>
+                <td className=''>{bid._id}</td>
+                <td className=''><img src={bid.ProductImage} alt={bid.productName} style={{ maxWidth: '100px', maxHeight: '100px' }} /></td>
+                <td className=''>{bid.productName}</td>
+                <td className=''>{bid.bid.toLocaleString('en-ds')}</td>
+                <td className=''>{formatLocalDateTime(bid.createdAt)}</td>
+                
               </tr>
             ))}
           </tbody>

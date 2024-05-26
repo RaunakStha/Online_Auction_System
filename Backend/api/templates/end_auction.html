@@ -4,19 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auction Ended</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        .email-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 120px; /* Adjust based on your logo size */
+        }
+    </style>
 </head>
 <body>
-    <p>Congratulations!</p>
-    
-    <p>You have won the auction for the product "{{ product }}".</p>
-    
-    <p>The highest bid you placed was: Rs{{ highest_bid }}</p>
-    
-    <P>To procced to Payment<a href="http://localhost:3000/checkout?orderId={{ order_id }}"> click Here</a></P>
-    
-    <p>Thank you for participating!</p>
-    
-    <p>Regards,</p>
-    <p>Your Auction Team</p>
+    <div class="email-container">
+        <img src="http://example.com/path/to/your/logo.png" alt="Your Logo" class="logo">
+        <h1>Congratulations! {{username}}</h1>
+        
+        <p>You have won the auction for the product "{{ product }}".</p>
+        
+        <p>The highest bid you placed was: Rs{{ highest_bid }}</p>
+        
+        <a href="#" class="button">Proceed to Payment</a>
+        
+        <p>Thank you for participating!</p>
+        
+        <div class="footer">
+            <p>Regards,</p>
+            <p>Your Auction Team</p>
+            <p>auctioninfo@gmail.com</p>
+            <p>+977-9836000000</p>
+        </div>
+    </div>
 </body>
 </html>

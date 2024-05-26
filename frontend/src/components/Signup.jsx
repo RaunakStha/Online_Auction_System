@@ -41,7 +41,7 @@ export default function Signup(){
         toast: true,
         timer: 4000,
         position: 'top-right',
-        showconfirmButtonText: false,
+        showconfirmButton: false,
         timerProgressBar: true
       });
         navigate('/login')
@@ -54,7 +54,7 @@ export default function Signup(){
         text: 'An error occurred while trying to create your account. Please try again.',
         icon: 'error',
         toast: true,
-        showconfirmButtonText: false,
+        showconfirmButton: false,
         timer: 4000,
         position: 'top-right',
         timerProgressBar: true
