@@ -193,7 +193,103 @@ const Checkout = () => {
               
                           </form>
             )}
-                          <div className="mt-12">
+          {
+              userProducts.map((product, index) => (
+                <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+                <input
+                  type="text"
+                  id="amount"
+                  name="amount"
+                  value={product.paidPrice}
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="tax_amount"
+                  name="tax_amount"
+                  value="0"
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="total_amount"
+                  name="total_amount"
+                  value={product.paidPrice}
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="transaction_uuid"
+                  name="transaction_uuid"
+                  value={product.transaction_id}
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="product_code"
+                  name="product_code"
+                  value="EPAYTEST"
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="product_service_charge"
+                  name="product_service_charge"
+                  value="0"
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="product_delivery_charge"
+                  name="product_delivery_charge"
+                  value="0"
+                  readonly
+                  required
+                />
+                <input
+                  type="text"
+                  id="success_url"
+                  name="success_url"
+                  value="http://localhost:3000/EsewaPayment"
+                  required
+                  readonly
+              
+                />
+                <input
+                  type="text"
+                  id="failure_url"
+                  name="failure_url"
+                  value="http://localhost:3000/checkout"
+                  required
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="signed_field_names"
+                  name="signed_field_names"
+                  value="total_amount,transaction_uuid,product_code"
+                  readonly
+                />
+                <input
+                  type="text"
+                  id="signature"
+                  name="signature"
+                  value={product.signature}
+                  required
+                  readonly
+                />
+               <input type="submit" class="bg-blue-500 ml-72 mt-5 text-white py-2 px-4 rounded-md inline-block hover:bg-blue-600"></input>
+            
+                </form>
+              ))
+          }
+
+              <div className="mt-12">
                 <h2 className="text-2xl font-extrabold text-[#333]">
                   Payment method
                 </h2>

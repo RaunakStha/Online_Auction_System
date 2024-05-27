@@ -120,7 +120,8 @@ export const AuthProvider = ({ children }) => {
                 email, username, password, password2
             })
         })
-        if(response.status === 201){
+        const data = await response.json();
+        if(response.ok){
             navigate("/login")
             swal.fire({
                 title: "Registration Successful, Login Now",
@@ -132,17 +133,9 @@ export const AuthProvider = ({ children }) => {
                 showConfirmButton: false,
             })
         } else {
-            console.log(response.status);
-            console.log("there was a server issue");
-            swal.fire({
-                title: "An Error Occured " + response.status,
-                icon: "error",
-                toast: true,
-                timer: 4000,
-                position: 'top-right',
-                timerProgressBar: true,
-                showConfirmButton: false,
-            })
+            // This will construct an error message from the server's response if available
+            const errorMessage = data.email?.join(' ') || data.username?.join(' ') || "An unknown error occurred. Please try again.";
+            throw new Error(errorMessage);
         }
     }
 

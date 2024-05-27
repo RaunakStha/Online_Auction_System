@@ -2,6 +2,9 @@ import React from 'react'
 import axios from 'axios';
 import {useState, useEffect,} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 
 const Home = () =>{
     const [products, setProducts] = useState([])
@@ -128,6 +131,26 @@ const Home = () =>{
         endAuction(productId);
     };
 
+    const responsive = {
+        superLargeDesktop: {
+          // the naming can be any, depends on you.
+          breakpoint: { max: 4000, min: 3000 },
+          items: 5
+        },
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 2
+        },
+        mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 1
+        }
+      };
+
     return ( 
         <div className='w-full bg-[#e7e7e7]'>
             <div className='max-h-[500px] relative'>
@@ -151,11 +174,16 @@ const Home = () =>{
             <div className='flex items-center bg-[#e7e7e7] dark:bg-gray-800 '>
                 <div className='p-4 mx-auto max-w-7xl'>
 
-                    <h2 className='pb-2 text-2xl font-bold  text-gray-800 md:text-4xl text-start dark:text-gray-400'>Ongoing Auction</h2>
+                    <h2 className='pb-2 text-2xl font-bold  text-gray-800 md:text-4xl text-start dark:text-gray-400 cursor-pointer hover:text-indigo-600 hover:underline'>Ongoing Auction</h2>
+                    
                             <div className='grid grid-cols-1 gap-4 lg:gap-4 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+                            
                                 {
+                                    
                                     results.length === 0 ? (
+
                                         ongoingAuctions.map((product) => (
+                                            
                                             <div key={product._id} className=' mt-56 bg-white rounded shadow dark:bg-gray-700'>
                                                 <div className='relative z-20 p-6 group'>
                                                     <div className='relative block h-64 mb-4 -mt-56 overflow-hidden rounded -top-full'>
@@ -277,7 +305,7 @@ const Home = () =>{
                                         // </ul>
                                     )))
                                 }
-
+                           
 
                             </div>
 
@@ -286,74 +314,7 @@ const Home = () =>{
 
             </div>
 
-{/* Upcomng Auction section starts from here */}
-            {/* <div className='flex items-center bg-gray-100 dark:bg-gray-800 '>
-                <div className='p-4 mx-auto max-w-7xl'>
-                    <h2 className='pb-2 text-2xl font-bold text-center text-gray-800 md:text-4xl dark:text-gray-400'>Upcoming Auction</h2>
-                    <div className='grid grid-cols-1 gap-4 lg:gap-4 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-                                {
-                                    upcomingAuctions.map((product) => (
-                                        <div key={product._id} className='mt-56 bg-white rounded shadow dark:bg-gray-700'>
-                                            <div className='relative z-20 p-6 group'>
-                                                <div className='relative block h-64 mb-4 -mt-56 overflow-hidden rounded -top-full'>
-                                                    {product.images.map((image) =>(
-                                                            <img key={image._id} className='object-cover w-full h-full transaction-all group-hover:scale-110'
-                                                            src={image.image}
-                                                            alt={product.name}/>
-                                                        ))}
-                                                    <div className='absolute flex flex-col top-4 right-4'>
-                                                        <a href='#' className='flex items-center'>
-                                                            <div className='relative flex items-center justify-center p-3 mb-3 transition-all translate-x-20 bg-white rounded dark:bg-gray-700 dark:text-white group-hover:translate-x-0 wishlist hover:bg-blue-200 dark:hover:bg-blue-600 group'>
-                                                                <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                width={20}
-                                                                height={20}
-                                                                fill="currentColor"
-                                                                className="bi bi-heart"
-                                                                viewBox="0 0 16 16"
-                                                                >
-                                                                    <path d='m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z'></path>
-                                                                </svg>
 
-                                                            </div>
-
-                                                        </a>
-
-                                                    </div>
-
-                                                </div>
-                                                <a href='#'>
-                                                    <h2 className='mb-4 text-xl font-bold text-black dark:text-white'>{product.name}</h2>
-                                                </a>
-                                                <div className='h-full pl-2 bg-gray-100 dark:bg-gray-400 flex items-center mb-6 rounded-md'>
-                                                    <div className='flex items-center mr-3 pr-3 ml-0 border-r border-r-gray-500'>
-                                                        <span><b>Starting at: {product.formattedStartDate}</b></span>
-                                                    </div>
-                                                    <div className='flex items-center'>
-
-                                                        <span className='inline'><b>Bids:{product.totalBids}</b></span>
-
-                                                    </div>
-                                                </div>
-                                                <div className='flex items-center justify-between w-full'>
-                                                    <div className='text-xl font-bold text-blue-500 dark:text-blue-300 items-center'>
-                                                        <span>Rs: {product.price}</span>
-
-                                                    </div>
-                                                    <Link to={`/product/${product.slug}-p-${product._id}`}>
-                                                        <button className='ml-6 text-lg items-center h-10 px-4'><span className='m-2 text-sm'>Details</span></button>
-                                                    </Link>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    ))
-                                }
-
-                    </div>
-                </div>
-            </div> */}
 {/* ClosedAuction section starts from here */}
             <div className='flex items-center bg-[#e7e7e7] dark:bg-gray-800 mb-8'>
                 <div className='p-4 mx-auto max-w-7xl'>

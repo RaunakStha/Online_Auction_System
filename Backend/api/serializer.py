@@ -1,3 +1,4 @@
+import base64
 from api.models import User, Profile
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -8,6 +9,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .tasks import send_verification_email
 from .models import *
+import hmac
+import hashlib
+
 
 class UserSerializer(serializers.ModelSerializer):
         class Meta:
@@ -56,6 +60,12 @@ class RegisterSerilizer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'username', 'password', 'password2')
         extra_kwargs = {'password': {'write_only': True}}
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("A user with this username already exists.")
+        return value
+
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
@@ -210,6 +220,12 @@ class BidSerializer(serializers.ModelSerializer):
             )
         return value
     
+def generate_signature(message, secret):
+    message_bytes = message.encode('utf-8')
+    secret_bytes = secret.encode('utf-8')
+    hash_bytes = hmac.new(secret_bytes, message_bytes, hashlib.sha256).digest()
+    hash_in_base64 = base64.b64encode(hash_bytes).decode('utf-8')
+    return hash_in_base64
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     productName = serializers.SerializerMethodField(read_only=True)
@@ -218,10 +234,14 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     seller = serializers.SerializerMethodField(read_only=True)
     buyer = serializers.SerializerMethodField(read_only=True)
 
+
+    
     class Meta:
         model = Order
         fields = '__all__'
-        
+    
+
+
     def get_productName(self, obj):
         return obj.product.name
 
@@ -243,14 +263,39 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     
 
 class BuyingOrderSerializer(OrderDetailSerializer):
+    transaction_id = serializers.SerializerMethodField(read_only=True)
+    signature = serializers.SerializerMethodField(read_only=True)
+    paidPrice = serializers.SerializerMethodField(read_only=True)
+
+    def get_paidPrice(self, obj):
+        paid_price = super().get_paidPrice(obj)
+        print(f"Paid Price: {paid_price}")
+        return paid_price
+
+    def get_transaction_id(self, obj):
+        if not hasattr(self, '_transaction_id'):
+            self._transaction_id = uuid.uuid4().hex
+        print(f"Transaction ID: {self._transaction_id}")
+        return self._transaction_id
+
+    def get_signature(self, obj):
+        paid_price = self.get_paidPrice(obj)
+        transaction_id = self.get_transaction_id(obj)
+        message = f"total_amount={paid_price},transaction_uuid={transaction_id},product_code=EPAYTEST"
+        secret = "8gBm/:&EnhH.1/q"
+        signature = generate_signature(message, secret)
+        print(message)
+        print(f"Signature: {signature}")
+        return signature
 
     class Meta:
         model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt']
-        
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'transaction_id', 'signature', 'createdAt']
+
 
 class ConfirmedOrderSerializer(OrderDetailSerializer):
 
     class Meta:
         model = Order
         fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer', 'conformedAt', 'address', 'isShipping', 'shippingAt', 'shippingCode', 'isDelivered', 'deliveredAt']
+

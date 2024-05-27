@@ -66,6 +66,7 @@ def send_otp_email(email,otp):
     Sends an OTP email to the user.
     """
     subject = "Your Login OTP"
+    
     context= {'otp': {otp}}
     html_message = render_to_string('otp_email.html',context)
     plain_message = strip_tags(html_message)

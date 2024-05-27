@@ -22,6 +22,7 @@ import Contact from "./components/Contact";
 import VerifyOTP from "./components/VerifyOTP";
 import VerifyAccount from "./components/VerifyAccount";
 import ResendVerificationEmail from "./components/ResendVerificationEmail";
+import EsewaPayment from "./components/EsewaPayment";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               
             </Route>
             <Route path="/checkout" element={<Checkout/>}/>
+            <Route path="/EsewaPayment" element={<EsewaPayment/>}/>
             <Route path="/profile" element={<Profile/>}>
               <Route path="addresses" element={<Address/>}/>
             </Route>

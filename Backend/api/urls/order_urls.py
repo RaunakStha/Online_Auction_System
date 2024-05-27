@@ -7,4 +7,5 @@ urlpatterns = [
     path('buying/', BuyingOrderList.as_view()),
     path('buyer/', ForBuyerOrderList.as_view()),
     path('seller/', ForSellerOrderList.as_view()),
+    path('payment-response/', payment_response, name='payment_response'),
 ]

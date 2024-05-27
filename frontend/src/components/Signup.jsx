@@ -23,6 +23,7 @@ export default function Signup(){
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setError("");
     if (password !== password2) {
       setError('Passwords do not match');
       return;
@@ -41,22 +42,23 @@ export default function Signup(){
         toast: true,
         timer: 4000,
         position: 'top-right',
-        showconfirmButton: false,
+        showConfirmButton: false,
         timerProgressBar: true
       });
         navigate('/login')
         // if (result.isConfirmed) {
         //   window.location.href = '/login'; // Or use navigate('/login') if using react-router-dom v6
         // }
-    } catch (error) {
+    }  catch (error) {
+      setError(error.message);  // Displaying the specific error message from the server
       Swal.fire({
         title: 'Registration Failed',
-        text: 'An error occurred while trying to create your account. Please try again.',
+        text: error.message,  // Displaying the specific error message from the server
         icon: 'error',
         toast: true,
-        showconfirmButton: false,
         timer: 4000,
         position: 'top-right',
+        showConfirmButton: false,
         timerProgressBar: true
       });
     }
